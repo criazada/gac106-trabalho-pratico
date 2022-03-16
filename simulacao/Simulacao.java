@@ -1,23 +1,28 @@
 package simulacao;
-
 import java.util.Random;
 /**
  * Responsavel pela simulacao.
  * @author David J. Barnes and Michael Kolling and Luiz Merschmann
  */
 public class Simulacao {
-    private Veiculo veiculo;
     private JanelaSimulacao janelaSimulacao;
     private Mapa mapa;
     
     public Simulacao() {
-        Random rand = new Random(12345);
+        Random rand = new Random(12346);
         mapa = new Mapa();
         int largura = mapa.getLargura();
         int altura = mapa.getAltura();
-        veiculo = new Veiculo(new Localizacao(rand.nextInt(largura),rand.nextInt(altura)));//Cria um veiculo em uma posicao aleatoria
-        veiculo.setLocalizacaoDestino(new Localizacao(rand.nextInt(largura),rand.nextInt(altura)));//Define a posicao destino aleatoriamente
-        mapa.adicionarItem(veiculo);//Inicializando o mapa com o veículo
+
+        // For para ver como fica com mais veiculos (debug)
+        for (int i = 0; i < 5; i++) {
+            // Cria um veiculo em uma posicao aleatoria
+            Veiculo veiculo = new Veiculo(new Localizacao(rand.nextInt(largura),rand.nextInt(altura)), mapa);
+            // Define a posicao destino aleatoriamente
+            veiculo.setLocalizacaoDestino(new Localizacao(rand.nextInt(largura),rand.nextInt(altura)));
+            mapa.adicionarItem(veiculo);
+        }
+        // Inicializando o mapa com o veículo
         janelaSimulacao = new JanelaSimulacao(mapa);
     }
     
@@ -30,9 +35,10 @@ public class Simulacao {
     }
 
     private void executarUmPasso() {
-        mapa.removerItem(veiculo);
-        veiculo.executarAcao();
-        mapa.adicionarItem(veiculo);
+        for (Veiculo v : mapa.getVeiculos()) {
+            v.executarAcao();
+        }
+
         janelaSimulacao.executarAcao();
     }
     

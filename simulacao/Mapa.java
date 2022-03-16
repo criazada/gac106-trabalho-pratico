@@ -1,14 +1,17 @@
 package simulacao;
 
+import java.util.*;
+
 /**
  * Representa um mapa com todos os itens que participam da simulacao
  * @author David J. Barnes and Michael Kolling and Luiz Merschmann
  */
 public class Mapa {
-    private Veiculo[][] itens;
+    private Veiculo[][] ladrilhos;
     private int largura;
     private int altura;
-    
+    private Set<Veiculo> veiculos;
+
     private static final int LARGURA_PADRAO = 35;
     private static final int ALTURA_PADRAO = 35;
     
@@ -20,7 +23,8 @@ public class Mapa {
     public Mapa(int largura, int altura) {
         this.largura = largura;
         this.altura = altura;
-        itens = new Veiculo[altura][largura];
+        ladrilhos = new Veiculo[altura][largura];
+        veiculos = new HashSet<>();
     }
     /**
      * Cria mapa com tamanho padrao.
@@ -30,20 +34,36 @@ public class Mapa {
     }
     
     public void adicionarItem(Veiculo v){
-        itens[v.getLocalizacaoAtual().getX()][v.getLocalizacaoAtual().getY()] = v;
+        veiculos.add(v);
     }
     
     public void removerItem(Veiculo v){
-        itens[v.getLocalizacaoAtual().getX()][v.getLocalizacaoAtual().getY()] = null;
+        veiculos.remove(v);
     }
     
-    public void atualizarMapa(Veiculo v){
-        removerItem(v);
-        adicionarItem(v);
+    public void atualizarMapa(Veiculo v, Localizacao anterior){
+        if (veiculos.contains(v)) {
+            ladrilhos[anterior.getX()][anterior.getY()] = null;
+        }
+        Localizacao l = v.getLocalizacaoAtual();
+        ladrilhos[l.getX()][l.getY()] = v;
     }
-    
+
     public Veiculo getItem(int x, int y){
-        return itens[x][y];
+        return ladrilhos[x][y];
+    }
+
+    public Veiculo getItem(Localizacao l) {
+        return ladrilhos[l.getX()][l.getY()];
+    }
+
+    public Iterable<Veiculo> getVeiculos() {
+        return new Iterable<Veiculo>() {
+            @Override
+            public Iterator<Veiculo> iterator() {
+                return veiculos.iterator();
+            }
+        };
     }
 
     public int getLargura() {

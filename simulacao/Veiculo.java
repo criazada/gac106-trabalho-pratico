@@ -11,9 +11,11 @@ public class Veiculo {
     private Localizacao localizacaoAtual;
     private Localizacao localizacaoDestino;
     private Image imagem;
+    private Mapa mapa;
 
-    public Veiculo(Localizacao localizacao) {
+    public Veiculo(Localizacao localizacao, Mapa mapa) {
         this.localizacaoAtual = localizacao;
+        this.mapa = mapa;
         localizacaoDestino = null;
         imagem = new ImageIcon(getClass().getResource("Imagens/veiculo.jpg")).getImage();
     }
@@ -31,7 +33,9 @@ public class Veiculo {
     }
 
     public void setLocalizacaoAtual(Localizacao localizacaoAtual) {
+        Localizacao anterior = this.localizacaoAtual;
         this.localizacaoAtual = localizacaoAtual;
+        mapa.atualizarMapa(this, anterior);
     }
 
     public void setLocalizacaoDestino(Localizacao localizacaoDestino) {
@@ -42,7 +46,10 @@ public class Veiculo {
         Localizacao destino = getLocalizacaoDestino();
         if(destino != null){
             Localizacao proximaLocalizacao = getLocalizacaoAtual().proximaLocalizacao(localizacaoDestino);
-            setLocalizacaoAtual(proximaLocalizacao);
+            // carro só anda se o espaço de destino está livre
+            if (mapa.getItem(proximaLocalizacao) == null) {
+                setLocalizacaoAtual(proximaLocalizacao);
+            }
         }
-    } 
+    }
 }
