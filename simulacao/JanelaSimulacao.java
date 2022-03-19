@@ -9,7 +9,7 @@ import javax.swing.*;
 public class JanelaSimulacao extends JFrame{
     private Mapa mapa;
     private VisaoMapa visaoMapa;
-    
+
     public JanelaSimulacao(Mapa mapa){
         this.mapa = mapa;
         visaoMapa = new VisaoMapa(mapa.getLargura(),mapa.getAltura());
@@ -19,7 +19,7 @@ public class JanelaSimulacao extends JFrame{
         setVisible(true);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
-    
+
     /**
      * Mostra o estado atual do mapa.
      */
@@ -38,11 +38,11 @@ public class JanelaSimulacao extends JFrame{
     }
 
     /**
-     * Fornece uma visualizacao grafica do mapa. Esta eh 
+     * Fornece uma visualizacao grafica do mapa. Esta eh
      * uma classe interna que define os componentes da GUI.
-     * Ela contém alguns detalhes mais avancados sobre GUI 
+     * Ela contém alguns detalhes mais avancados sobre GUI
      * que voce pode ignorar para realizacao do seu trabalho.
-     */    
+     */
     private class VisaoMapa extends JPanel{
 
         private final int VIEW_SCALING_FACTOR = 6;
@@ -73,7 +73,7 @@ public class JanelaSimulacao extends JFrame{
             return new Dimension(larguraMapa * VIEW_SCALING_FACTOR,
                                  alturaMapa * VIEW_SCALING_FACTOR);
         }
-        
+
         /**
          * Prepara para um novo ciclo de exibicao. Uma vez que o componente
          * pode ser redimensionado, calcula o "fator de escala" novamente.
@@ -104,7 +104,7 @@ public class JanelaSimulacao extends JFrame{
                 g.drawLine(0, y, tamanho.width - 1, y);
             }
         }
-        
+
         /**
          * Desenha a imagem para um determinado item.
          */
@@ -125,5 +125,5 @@ public class JanelaSimulacao extends JFrame{
             }
         }
     }
-    
+
 }
