@@ -8,7 +8,7 @@
       let
         pkgs = nixpkgs.legacyPackages.${system};
 
-        buildInputs = with pkgs; [ jdk8 ];
+        buildInputs = with pkgs; [ jdk ];
         nativeBuildInputs = with pkgs; [ ];
       in
       rec {

@@ -5,6 +5,7 @@ import javax.swing.ImageIcon;
 
 /**
  * Representa os veiculos da simulacao.
+ * 
  * @author David J. Barnes and Michael Kolling and Luiz Merschmann
  */
 public class Veiculo {
@@ -28,7 +29,7 @@ public class Veiculo {
         return localizacaoDestino;
     }
 
-    public Image getImagem(){
+    public Image getImagem() {
         return imagem;
     }
 
@@ -42,9 +43,9 @@ public class Veiculo {
         this.localizacaoDestino = localizacaoDestino;
     }
 
-    public void executarAcao(){
+    public void executarAcao() {
         Localizacao destino = getLocalizacaoDestino();
-        if(destino != null){
+        if (destino != null) {
             Localizacao proximaLocalizacao = getLocalizacaoAtual().proximaLocalizacao(localizacaoDestino);
             // carro só anda se o espaço de destino está livre
             if (mapa.getItem(proximaLocalizacao) == null) {
