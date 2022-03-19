@@ -10,7 +10,7 @@ public class Localizacao {
     private int x;
     private int y;
     private static Random rand = new Random();
-    
+
     /**
      * Representa uma localização na cidade
      * @param x Coordenada x: deve ser maior ou igual a 0.
@@ -28,7 +28,7 @@ public class Localizacao {
     public int getY() {
         return y;
     }
-    
+
     /**
      * Gera a localizacao para se mover visando alcançar o destino
      * @param localizacaoDestino: localizacao que se deseja alcancar.
@@ -56,7 +56,7 @@ public class Localizacao {
             return novaLocalizacao;
         }
     }
-    
+
     /**
      * Verificacao de igualdade de conteudo de objetos do tipo Localizacao.
      * @return true: se a localizacao é igual.
@@ -73,7 +73,7 @@ public class Localizacao {
             return x == outro.x && y == outro.y;
         }
     }
-    
+
     /**
      * @return A representacao da localizacao.
      */
@@ -82,6 +82,6 @@ public class Localizacao {
     {
         return "(" + x + ", " + y + ")";
     }
-    
-    
+
+
 }

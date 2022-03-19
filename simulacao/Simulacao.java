@@ -7,7 +7,7 @@ import java.util.Random;
 public class Simulacao {
     private JanelaSimulacao janelaSimulacao;
     private Mapa mapa;
-    
+
     public Simulacao() {
         Random rand = new Random(12346);
         mapa = new Mapa();
@@ -25,23 +25,23 @@ public class Simulacao {
         // Inicializando o mapa com o veículo
         janelaSimulacao = new JanelaSimulacao(mapa);
     }
-    
+
     public void executarSimulacao(int numPassos){
         janelaSimulacao.executarAcao();
         for (int i = 0; i < numPassos; i++) {
             executarUmPasso();
             esperar(100);
-        }        
+        }
     }
 
     private void executarUmPasso() {
-        for (Veiculo v : mapa.getVeiculos()) {
+        for (Veiculo v : mapa.getItens()) {
             v.executarAcao();
         }
 
         janelaSimulacao.executarAcao();
     }
-    
+
     private void esperar(int milisegundos){
         try{
             Thread.sleep(milisegundos);
@@ -49,5 +49,4 @@ public class Simulacao {
             System.out.println(e.getMessage());
         }
     }
-    
 }

@@ -7,14 +7,13 @@ import java.util.*;
  * @author David J. Barnes and Michael Kolling and Luiz Merschmann
  */
 public class Mapa {
-    private Veiculo[][] ladrilhos;
+    private Veiculo[][] itens;
     private int largura;
     private int altura;
-    private Set<Veiculo> veiculos;
 
     private static final int LARGURA_PADRAO = 35;
     private static final int ALTURA_PADRAO = 35;
-    
+
     /**
      * Cria mapa para alocar itens da simulacao.
      * @param largura: largura da área de simulacao.
@@ -23,8 +22,7 @@ public class Mapa {
     public Mapa(int largura, int altura) {
         this.largura = largura;
         this.altura = altura;
-        ladrilhos = new Veiculo[altura][largura];
-        veiculos = new HashSet<>();
+        itens = new Veiculo[altura][largura];
     }
     /**
      * Cria mapa com tamanho padrao.
@@ -32,38 +30,52 @@ public class Mapa {
     public Mapa(){
         this(LARGURA_PADRAO,ALTURA_PADRAO);
     }
-    
+
     public void adicionarItem(Veiculo v){
-        veiculos.add(v);
+        setItem(v.getLocalizacaoAtual(), v);
     }
-    
+
     public void removerItem(Veiculo v){
-        veiculos.remove(v);
+        setItem(v.getLocalizacaoAtual(), null);
     }
-    
+
     public void atualizarMapa(Veiculo v, Localizacao anterior){
-        if (veiculos.contains(v)) {
-            ladrilhos[anterior.getX()][anterior.getY()] = null;
+        if (getItem(anterior) != v) {
+            System.out.printf("Veículo %s tentou atualizar posição que não é sua%n", v);
         }
-        Localizacao l = v.getLocalizacaoAtual();
-        ladrilhos[l.getX()][l.getY()] = v;
+        setItem(anterior, null);
+        setItem(v.getLocalizacaoAtual(), v);
     }
 
     public Veiculo getItem(int x, int y){
-        return ladrilhos[x][y];
+        return itens[x][y];
     }
 
     public Veiculo getItem(Localizacao l) {
-        return ladrilhos[l.getX()][l.getY()];
+        return getItem(l.getX(), l.getY());
     }
 
-    public Iterable<Veiculo> getVeiculos() {
-        return new Iterable<Veiculo>() {
-            @Override
-            public Iterator<Veiculo> iterator() {
-                return veiculos.iterator();
+    private void setItem(int x, int y, Veiculo v) {
+        itens[x][y] = v;
+    }
+
+    private void setItem(Localizacao l, Veiculo v) {
+        setItem(l.getX(), l.getY(), v);
+    }
+
+    public List<Veiculo> getItens() {
+        List<Veiculo> itensValidos = new ArrayList<>();
+
+        for (int y = getAltura() - 1; y >= 0; y--) {
+            for (int x = getLargura() - 1; x >= 0; x--) {
+                Veiculo item = getItem(x, y);
+                if (item != null) {
+                    itensValidos.add(item);
+                }
             }
-        };
+        }
+
+        return itensValidos;
     }
 
     public int getLargura() {
@@ -73,5 +85,5 @@ public class Mapa {
     public int getAltura() {
         return altura;
     }
-    
+
 }

@@ -27,7 +27,7 @@ public class Veiculo {
     public Localizacao getLocalizacaoDestino() {
         return localizacaoDestino;
     }
-    
+
     public Image getImagem(){
         return imagem;
     }
@@ -41,7 +41,7 @@ public class Veiculo {
     public void setLocalizacaoDestino(Localizacao localizacaoDestino) {
         this.localizacaoDestino = localizacaoDestino;
     }
-    
+
     public void executarAcao(){
         Localizacao destino = getLocalizacaoDestino();
         if(destino != null){
