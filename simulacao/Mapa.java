@@ -4,6 +4,7 @@ import java.util.*;
 
 /**
  * Representa um mapa com todos os itens que participam da simulacao
+ * 
  * @author David J. Barnes and Michael Kolling and Luiz Merschmann
  */
 public class Mapa {
@@ -16,30 +17,32 @@ public class Mapa {
 
     /**
      * Cria mapa para alocar itens da simulacao.
+     * 
      * @param largura: largura da área de simulacao.
-     * @param altura: altura da área de simulação.
+     * @param altura:  altura da área de simulação.
      */
     public Mapa(int largura, int altura) {
         this.largura = largura;
         this.altura = altura;
         itens = new Veiculo[altura][largura];
     }
+
     /**
      * Cria mapa com tamanho padrao.
      */
-    public Mapa(){
-        this(LARGURA_PADRAO,ALTURA_PADRAO);
+    public Mapa() {
+        this(LARGURA_PADRAO, ALTURA_PADRAO);
     }
 
-    public void adicionarItem(Veiculo v){
+    public void adicionarItem(Veiculo v) {
         setItem(v.getLocalizacaoAtual(), v);
     }
 
-    public void removerItem(Veiculo v){
+    public void removerItem(Veiculo v) {
         setItem(v.getLocalizacaoAtual(), null);
     }
 
-    public void atualizarMapa(Veiculo v, Localizacao anterior){
+    public void atualizarMapa(Veiculo v, Localizacao anterior) {
         if (getItem(anterior) != v) {
             System.out.printf("Veículo %s tentou atualizar posição que não é sua%n", v);
         }
@@ -47,7 +50,7 @@ public class Mapa {
         setItem(v.getLocalizacaoAtual(), v);
     }
 
-    public Veiculo getItem(int x, int y){
+    public Veiculo getItem(int x, int y) {
         return itens[x][y];
     }
 
