@@ -1,7 +1,5 @@
 package simulacao;
 
-import javax.swing.ImageIcon;
-
 /**
  * Representa os veiculos da simulacao.
  * 
@@ -9,7 +7,7 @@ import javax.swing.ImageIcon;
  */
 public class Veiculo extends ObjetoAmbulante {
     public Veiculo(Localizacao localizacao, Mapa mapa) {
-        super(new ImageIcon(Veiculo.class.getResource("Imagens/veiculo.jpg")).getImage(), localizacao, mapa);
+        super(Recurso.CARRO.getImagem(), localizacao, mapa);
     }
 
     @Override
