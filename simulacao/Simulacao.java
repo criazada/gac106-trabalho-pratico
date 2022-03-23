@@ -38,7 +38,7 @@ public class Simulacao {
     }
 
     private void executarUmPasso() {
-        for (Veiculo v : mapa.getItens()) {
+        for (ObjetoSimulacao v : mapa.getItens()) {
             v.executarAcao();
         }
 
