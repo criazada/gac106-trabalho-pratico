@@ -1,6 +1,5 @@
 package simulacao;
 
-import java.awt.Image;
 import javax.swing.ImageIcon;
 
 /**
@@ -8,49 +7,21 @@ import javax.swing.ImageIcon;
  * 
  * @author David J. Barnes and Michael Kolling and Luiz Merschmann
  */
-public class Veiculo {
-    private Localizacao localizacaoAtual;
-    private Localizacao localizacaoDestino;
-    private Image imagem;
-    private Mapa mapa;
-
+public class Veiculo extends ObjetoAmbulante {
     public Veiculo(Localizacao localizacao, Mapa mapa) {
-        this.localizacaoAtual = localizacao;
-        this.mapa = mapa;
-        localizacaoDestino = null;
-        imagem = new ImageIcon(getClass().getResource("Imagens/veiculo.jpg")).getImage();
+        super(new ImageIcon(Veiculo.class.getResource("Imagens/veiculo.jpg")).getImage(), localizacao, mapa);
     }
 
-    public Localizacao getLocalizacaoAtual() {
-        return localizacaoAtual;
-    }
-
-    public Localizacao getLocalizacaoDestino() {
-        return localizacaoDestino;
-    }
-
-    public Image getImagem() {
-        return imagem;
-    }
-
-    public void setLocalizacaoAtual(Localizacao localizacaoAtual) {
-        Localizacao anterior = this.localizacaoAtual;
-        this.localizacaoAtual = localizacaoAtual;
-        mapa.atualizarMapa(this, anterior);
-    }
-
-    public void setLocalizacaoDestino(Localizacao localizacaoDestino) {
-        this.localizacaoDestino = localizacaoDestino;
-    }
-
+    @Override
     public void executarAcao() {
         Localizacao destino = getLocalizacaoDestino();
         if (destino != null) {
-            Localizacao proximaLocalizacao = getLocalizacaoAtual().proximaLocalizacao(localizacaoDestino);
+            Localizacao proximaLocalizacao = getLocalizacao().proximaLocalizacao(destino);
             // carro só anda se o espaço de destino está livre
-            if (mapa.getItem(proximaLocalizacao) == null) {
-                setLocalizacaoAtual(proximaLocalizacao);
+            if (getMapa().getItem(proximaLocalizacao) == null) {
+                setLocalizacao(proximaLocalizacao);
             }
         }
     }
+
 }
