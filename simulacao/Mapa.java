@@ -43,20 +43,20 @@ public class Mapa {
         this(LARGURA_PADRAO, ALTURA_PADRAO);
     }
 
-    public void adicionarItem(Camada c, ObjetoSimulacao v) {
-        setItem(c, v.getLocalizacao(), v);
+    public void adicionarObjeto(Camada c, ObjetoSimulacao v) {
+        setObjeto(c, v.getLocalizacao(), v);
     }
 
-    public void removerItem(Camada c, ObjetoSimulacao v) {
-        setItem(c, v.getLocalizacao(), null);
+    public void removerObjeto(Camada c, ObjetoSimulacao v) {
+        setObjeto(c, v.getLocalizacao(), null);
     }
 
     public void atualizarMapa(Camada c, ObjetoSimulacao v, Localizacao anterior) {
-        if (getItem(c, anterior) != v) {
+        if (getObjeto(c, anterior) != v) {
             System.out.printf("Veículo %s tentou atualizar posição que não é sua%n", v);
         }
-        setItem(c, anterior, null);
-        setItem(c, v.getLocalizacao(), v);
+        setObjeto(c, anterior, null);
+        setObjeto(c, v.getLocalizacao(), v);
     }
 
     public ObjetoSimulacao[][] getCamada(Camada c) {
@@ -71,29 +71,29 @@ public class Mapa {
         }
     }
 
-    public ObjetoSimulacao getItem(Camada c, int x, int y) {
+    public ObjetoSimulacao getObjeto(Camada c, int x, int y) {
         return getCamada(c)[x][y];
     }
 
-    public ObjetoSimulacao getItem(Camada c, Localizacao l) {
-        return getItem(c, l.getX(), l.getY());
+    public ObjetoSimulacao getObjeto(Camada c, Localizacao l) {
+        return getObjeto(c, l.getX(), l.getY());
     }
 
-    private void setItem(Camada c, int x, int y, ObjetoSimulacao v) {
+    private void setObjeto(Camada c, int x, int y, ObjetoSimulacao v) {
         getCamada(c)[x][y] = v;
     }
 
-    private void setItem(Camada c, Localizacao l, ObjetoSimulacao v) {
-        setItem(c, l.getX(), l.getY(), v);
+    private void setObjeto(Camada c, Localizacao l, ObjetoSimulacao v) {
+        setObjeto(c, l.getX(), l.getY(), v);
     }
 
-    public List<ObjetoSimulacao> getItens() {
+    public List<ObjetoSimulacao> getObjetos() {
         List<ObjetoSimulacao> objetosValidos = new ArrayList<>();
         
         for (Camada c : Camada.TODAS) {
             for (int y = getAltura() - 1; y >= 0; y--) {
                 for (int x = getLargura() - 1; x >= 0; x--) {
-                    ObjetoSimulacao objeto = getItem(c, x, y);
+                    ObjetoSimulacao objeto = getObjeto(c, x, y);
                     if (objeto != null) {
                         objetosValidos.add(objeto);
                     }

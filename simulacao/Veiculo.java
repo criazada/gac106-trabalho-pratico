@@ -14,11 +14,11 @@ public class Veiculo extends ObjetoAmbulante {
     public void executarAcao() {
         Localizacao destino = getLocalizacaoDestino();
         if (destino != null) {
-            Localizacao proximaLocalizacao = getLocalizacao().proximaLocalizacao(destino);
+            Localizacao prox = getLocalizacao().proximaLocalizacao(destino);
             // carro só anda se o espaço de destino está livre
             Mapa m = getMapa();
-            if (m.getItem(Mapa.Camada.FOREGROUND, proximaLocalizacao) == null && m.getItem(Mapa.Camada.BACKGROUND, proximaLocalizacao) == null) {
-                setLocalizacao(proximaLocalizacao);
+            if (m.getObjeto(Mapa.Camada.FOREGROUND, prox) == null && m.getObjeto(Mapa.Camada.BACKGROUND, prox) == null) {
+                setLocalizacao(prox);
             }
         }
     }
