@@ -8,7 +8,15 @@ import java.util.*;
  * @author David J. Barnes and Michael Kolling and Luiz Merschmann
  */
 public class Mapa {
-    private ObjetoSimulacao[][] itens;
+    public enum Camada {
+        FOREGROUND, BACKGROUND;
+
+        public static final Camada[] TODAS = { BACKGROUND, FOREGROUND };
+    }
+
+    private ObjetoSimulacao[][] foreground;
+    private ObjetoSimulacao[][] background;
+
     private int largura;
     private int altura;
 
@@ -24,7 +32,8 @@ public class Mapa {
     public Mapa(int largura, int altura) {
         this.largura = largura;
         this.altura = altura;
-        itens = new ObjetoSimulacao[altura][largura];
+        foreground = new ObjetoSimulacao[altura][largura];
+        background = new ObjetoSimulacao[altura][largura];
     }
 
     /**
@@ -34,51 +43,65 @@ public class Mapa {
         this(LARGURA_PADRAO, ALTURA_PADRAO);
     }
 
-    public void adicionarItem(ObjetoSimulacao v) {
-        setItem(v.getLocalizacao(), v);
+    public void adicionarItem(Camada c, ObjetoSimulacao v) {
+        setItem(c, v.getLocalizacao(), v);
     }
 
-    public void removerItem(ObjetoSimulacao v) {
-        setItem(v.getLocalizacao(), null);
+    public void removerItem(Camada c, ObjetoSimulacao v) {
+        setItem(c, v.getLocalizacao(), null);
     }
 
-    public void atualizarMapa(ObjetoSimulacao v, Localizacao anterior) {
-        if (getItem(anterior) != v) {
+    public void atualizarMapa(Camada c, ObjetoSimulacao v, Localizacao anterior) {
+        if (getItem(c, anterior) != v) {
             System.out.printf("Veículo %s tentou atualizar posição que não é sua%n", v);
         }
-        setItem(anterior, null);
-        setItem(v.getLocalizacao(), v);
+        setItem(c, anterior, null);
+        setItem(c, v.getLocalizacao(), v);
     }
 
-    public ObjetoSimulacao getItem(int x, int y) {
-        return itens[x][y];
+    public ObjetoSimulacao[][] getCamada(Camada c) {
+        switch (c) {
+            case FOREGROUND:
+                return foreground;
+            case BACKGROUND:
+                return background;
+            default:
+                System.out.println("getCamada: camada inválida");
+                return null;
+        }
     }
 
-    public ObjetoSimulacao getItem(Localizacao l) {
-        return getItem(l.getX(), l.getY());
+    public ObjetoSimulacao getItem(Camada c, int x, int y) {
+        return getCamada(c)[x][y];
     }
 
-    private void setItem(int x, int y, ObjetoSimulacao v) {
-        itens[x][y] = v;
+    public ObjetoSimulacao getItem(Camada c, Localizacao l) {
+        return getItem(c, l.getX(), l.getY());
     }
 
-    private void setItem(Localizacao l, ObjetoSimulacao v) {
-        setItem(l.getX(), l.getY(), v);
+    private void setItem(Camada c, int x, int y, ObjetoSimulacao v) {
+        getCamada(c)[x][y] = v;
+    }
+
+    private void setItem(Camada c, Localizacao l, ObjetoSimulacao v) {
+        setItem(c, l.getX(), l.getY(), v);
     }
 
     public List<ObjetoSimulacao> getItens() {
-        List<ObjetoSimulacao> itensValidos = new ArrayList<>();
-
-        for (int y = getAltura() - 1; y >= 0; y--) {
-            for (int x = getLargura() - 1; x >= 0; x--) {
-                ObjetoSimulacao item = getItem(x, y);
-                if (item != null) {
-                    itensValidos.add(item);
+        List<ObjetoSimulacao> objetosValidos = new ArrayList<>();
+        
+        for (Camada c : Camada.TODAS) {
+            for (int y = getAltura() - 1; y >= 0; y--) {
+                for (int x = getLargura() - 1; x >= 0; x--) {
+                    ObjetoSimulacao objeto = getItem(c, x, y);
+                    if (objeto != null) {
+                        objetosValidos.add(objeto);
+                    }
                 }
             }
         }
 
-        return itensValidos;
+        return Collections.unmodifiableList(objetosValidos);
     }
 
     public int getLargura() {

@@ -6,7 +6,7 @@ public abstract class ObjetoAmbulante extends ObjetoSimulacao {
     private Localizacao localizacaoDestino;
 
     public ObjetoAmbulante(Image imagem, Localizacao localizacao, Mapa mapa) {
-        super(imagem, localizacao, mapa);
+        super(imagem, localizacao, mapa, Mapa.Camada.FOREGROUND);
         localizacaoDestino = null;
     }
 
@@ -18,4 +18,3 @@ public abstract class ObjetoAmbulante extends ObjetoSimulacao {
         this.localizacaoDestino = localizacaoDestino;
     }
 }
-
