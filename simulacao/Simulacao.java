@@ -23,7 +23,7 @@ public class Simulacao {
             Veiculo veiculo = new Veiculo(new Localizacao(rand.nextInt(largura), rand.nextInt(altura)), mapa);
             // Define a posicao destino aleatoriamente
             veiculo.setLocalizacaoDestino(new Localizacao(rand.nextInt(largura), rand.nextInt(altura)));
-            mapa.adicionarItem(veiculo);
+            mapa.adicionarItem(veiculo.getCamada(), veiculo);
         }
         // Inicializando o mapa com o veículo
         janelaSimulacao = new JanelaSimulacao(mapa);
