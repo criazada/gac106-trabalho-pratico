@@ -40,8 +40,11 @@ public class Simulacao {
     public void executarSimulacao(int n) {
         janelaSimulacao.atualizar();
         for (int i = 0; i < n; i++) {
+            long inicio = System.nanoTime();
             iteracao();
-            esperar(100);
+            long tempo = System.nanoTime() - inicio;
+            int t = 100 - ((int) tempo / 1000000);
+            esperar(t);
         }
     }
 
