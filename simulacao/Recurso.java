@@ -7,7 +7,11 @@ public enum Recurso {
     CARRO("carro.png"),
     SEMAFORO_VERDE("semaforo-verde.png"),
     SEMAFORO_AMARELO("semaforo-amarelo.png"),
-    SEMAFORO_VERMELHO("semaforo-vermelho.png");
+    SEMAFORO_VERMELHO("semaforo-vermelho.png"),
+    RUA_NORTE("rua-norte.png"),
+    RUA_SUL("rua-sul.png"),
+    RUA_LESTE("rua-leste.png"),
+    RUA_OESTE("rua-oeste.png");
 
     private Image imagem;
     private static final String base = "imagens";

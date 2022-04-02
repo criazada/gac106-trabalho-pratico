@@ -22,7 +22,7 @@ public class Simulacao {
             mapa.adicionarObjeto(semaforo);
             Direcao d = i % 2 == 0 ? Direcao.LESTE : Direcao.OESTE;
             for (int j = 10; j < 17; j++) {
-                Rua rua = new Rua(d, false, new Localizacao(j, i), mapa);
+                Rua rua = new Rua(d, j == 13, new Localizacao(j, i), mapa);
                 mapa.adicionarObjeto(rua);
             }
         }
