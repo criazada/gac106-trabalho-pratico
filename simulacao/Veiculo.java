@@ -16,8 +16,7 @@ public class Veiculo extends ObjetoAmbulante {
         if (destino != null) {
             Localizacao prox = getLocalizacao().proximaLocalizacao(destino);
             // carro só anda se o espaço de destino está livre
-            Mapa m = getMapa();
-            if (m.getObjeto(Mapa.Camada.FOREGROUND, prox) == null && m.getObjeto(Mapa.Camada.BACKGROUND, prox) == null) {
+            if (livre(prox)) {
                 setLocalizacao(prox);
             }
         }

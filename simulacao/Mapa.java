@@ -131,6 +131,22 @@ public class Mapa {
     }
 
     /**
+     * Retorna os objetos em ambas camadas do mapa em uma localização.
+     * @param l Localização dos objetos
+     * @return Os objetos na localização
+     */
+    public List<ObjetoSimulacao> getObjetosEm(Localizacao l) {
+        List<ObjetoSimulacao> objetos = new ArrayList<>();
+        for (Camada c : Camada.TODAS) {
+            ObjetoSimulacao o = getObjeto(c, l);
+            if (o != null) {
+                objetos.add(o);
+            }
+        }
+        return objetos;
+    }
+
+    /**
      * Posiciona o objeto o em (x, y) na camada
      * @param c Camada
      * @param x Posição X
