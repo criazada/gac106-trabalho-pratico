@@ -7,7 +7,7 @@ public abstract class ObjetoAmbulante extends ObjetoSimulacao {
     private Localizacao localizacaoDestino;
 
     public ObjetoAmbulante(Image imagem, Localizacao localizacao, Mapa mapa, Random rng) {
-        super(imagem, localizacao, mapa, Mapa.Camada.FOREGROUND, rng);
+        super(imagem, localizacao, mapa, Mapa.Camada.MIDDLE, rng);
         localizacaoDestino = null;
     }
 

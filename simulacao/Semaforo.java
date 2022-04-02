@@ -7,7 +7,7 @@ public class Semaforo extends ObjetoSimulacao {
     private boolean transparente;
 
     public Semaforo(Localizacao localizacao, Mapa mapa, Random rng) {
-        super(Recurso.SEMAFORO_VERMELHO.getImagem(), localizacao, mapa, Mapa.Camada.MIDDLE, rng);
+        super(Recurso.SEMAFORO_VERMELHO.getImagem(), localizacao, mapa, Mapa.Camada.FOREGROUND, rng);
     }
 
     @Override
