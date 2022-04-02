@@ -22,10 +22,17 @@ public class Simulacao {
             mapa.adicionarObjeto(semaforo);
             Direcao d = i % 2 == 0 ? Direcao.LESTE : Direcao.OESTE;
             for (int j = 10; j < 17; j++) {
-                Rua rua = new Rua(d, j == 13, new Localizacao(j, i), mapa);
+                Rua rua;
+                Localizacao l = new Localizacao(j, i);
+                if (j == 13) {
+                    rua = new Rua(d, Direcao.SUL, l, mapa);
+                } else {
+                    rua = new Rua(d, l, mapa);
+                }
                 mapa.adicionarObjeto(rua);
             }
         }
+
         // For para ver como fica com mais veiculos (debug)
         for (int i = 0; i < 5; i++) {
             // Cria um veiculo em uma posicao aleatoria
@@ -47,7 +54,7 @@ public class Simulacao {
         for (int i = 0; i < n; i++) {
             long inicio = System.nanoTime();
             iteracao();
-            int tempo = (int) (System.nanoTime() - inicio) / 1000000;
+            int tempo = (int) ((System.nanoTime() - inicio) / 1000000);
             System.out.println(tempo);
             int t = 100 - tempo;
             esperar(t);

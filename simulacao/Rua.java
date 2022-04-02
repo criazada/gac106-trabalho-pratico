@@ -3,14 +3,12 @@ package simulacao;
 import java.awt.Image;
 
 public class Rua extends ObjetoSimulacao {
-    private boolean cruzamento;
+    private Direcao[] direcoes;
     
-    public Rua(Direcao direcao, boolean cruzamento, Localizacao localizacao, Mapa mapa) {
+    private Rua(Direcao[] direcoes, Localizacao localizacao, Mapa mapa) {
         super(null, localizacao, mapa, Mapa.Camada.BACKGROUND, null);
-        setDirecao(direcao);
-        this.cruzamento = cruzamento;
         Recurso r = null;
-        switch (direcao) {
+        switch (direcoes[0]) {
             case NORTE:
                 r = Recurso.RUA_NORTE;
                 break;
@@ -31,6 +29,15 @@ public class Rua extends ObjetoSimulacao {
                 break;
         }
         setImagem(r.getImagem());
+        this.direcoes = direcoes;
+    }
+
+    public Rua(Direcao direcao, Localizacao localizacao, Mapa mapa) {
+        this(new Direcao[]{direcao}, localizacao, mapa);
+    }
+
+    public Rua(Direcao direcao, Direcao direcaoSecundaria, Localizacao localizacao, Mapa mapa) {
+        this(new Direcao[]{direcao, direcaoSecundaria}, localizacao, mapa);
     }
 
     @Override
@@ -41,11 +48,10 @@ public class Rua extends ObjetoSimulacao {
     @Override
     public boolean transparentePara(ObjetoSimulacao o) {
         Direcao desejada = Direcao.calcular(o.getLocalizacao(), getLocalizacao());
-        if (cruzamento) {
-            return calcularDirecao().oposta() != desejada;
-        } else {
-            return calcularDirecao() == desejada;
+        for (Direcao d : direcoes) {
+            if (d == desejada) return true;
         }
+        return false;
     }
 
     @Override
