@@ -1,15 +1,22 @@
 package simulacao;
 
 public class Rua extends ObjetoSimulacao {
-    public Rua(Direcao direcao, Localizacao localizacao, Mapa mapa) {
+    private boolean cruzamento;
+
+    public Rua(Direcao direcao, boolean cruzamento, Localizacao localizacao, Mapa mapa) {
         super(Recurso.CARRO.getImagem(), localizacao, mapa, Mapa.Camada.BACKGROUND, null);
         setDirecao(direcao);
+        this.cruzamento = cruzamento;
     }
 
     @Override
     public boolean transparentePara(ObjetoSimulacao o) {
         Direcao desejada = Direcao.calcular(o.getLocalizacao(), getLocalizacao());
-        return calcularDirecao().oposta() != desejada;
+        if (cruzamento) {
+            return calcularDirecao().oposta() != desejada;
+        } else {
+            return calcularDirecao() == desejada;
+        }
     }
 
     @Override
