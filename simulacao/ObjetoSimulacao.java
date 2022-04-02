@@ -34,6 +34,10 @@ public abstract class ObjetoSimulacao {
         return imagem;
     }
 
+    public void setImagem(Image imagem) {
+        this.imagem = imagem;
+    }
+
     public Localizacao getLocalizacao() {
         return locAtual;
     }
