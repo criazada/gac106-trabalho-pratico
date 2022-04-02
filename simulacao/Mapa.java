@@ -4,7 +4,7 @@ import java.util.*;
 
 /**
  * Representa um mapa com todos os itens que participam da simulacao
- * 
+ *
  * @author David J. Barnes and Michael Kolling and Luiz Merschmann
  */
 public class Mapa {
@@ -25,7 +25,7 @@ public class Mapa {
 
     /**
      * Cria mapa para alocar itens da simulacao.
-     * 
+     *
      * @param largura: largura da área de simulacao.
      * @param altura:  altura da área de simulação.
      */
@@ -43,23 +43,43 @@ public class Mapa {
         this(LARGURA_PADRAO, ALTURA_PADRAO);
     }
 
-    public void adicionarObjeto(Camada c, ObjetoSimulacao v) {
-        setObjeto(c, v.getLocalizacao(), v);
+    /**
+     * Adiciona um objeto no mapa.
+     *
+     * @param o Objeto a ser adicionado
+     */
+    public void adicionarObjeto(ObjetoSimulacao o) {
+        setObjeto(o.getCamada(), o.getLocalizacao(), o);
     }
 
-    public void removerObjeto(Camada c, ObjetoSimulacao v) {
-        setObjeto(c, v.getLocalizacao(), null);
+    /**
+     * Remove um objeto do mapa.
+     * @param o Objeto a ser removido
+     */
+    public void removerObjeto(ObjetoSimulacao o) {
+        setObjeto(o.getCamada(), o.getLocalizacao(), null);
     }
 
-    public void atualizarMapa(Camada c, ObjetoSimulacao v, Localizacao anterior) {
-        if (getObjeto(c, anterior) != v) {
-            System.out.printf("Veículo %s tentou atualizar posição que não é sua%n", v);
+    /**
+     * Atualiza a posição de um objeto no mapa.
+     * @param o Objeto a ser atualizado
+     */
+    public void atualizarMapa(ObjetoSimulacao o) {
+        Camada c = o.getCamada();
+        Localizacao anterior = o.getLocalizacaoAnterior();
+        if (getObjeto(c, anterior) != o) {
+            System.out.printf("atualizarMapa: ObjetoSimulacao %s tentou atualizar posição que não é sua%n", o);
         }
         setObjeto(c, anterior, null);
-        setObjeto(c, v.getLocalizacao(), v);
+        setObjeto(c, o.getLocalizacao(), o);
     }
 
-    public ObjetoSimulacao[][] getCamada(Camada c) {
+    /**
+     * Retorna a matriz de objetos de uma camada
+     * @param c Camada
+     * @return matriz de objetos da camada
+     */
+    private ObjetoSimulacao[][] getCamada(Camada c) {
         switch (c) {
             case FOREGROUND:
                 return foreground;
@@ -71,25 +91,75 @@ public class Mapa {
         }
     }
 
+    /**
+     * Retorna o objeto em uma posição (x, y) em uma camada do mapa.
+     * @param c Camada
+     * @param x Posição X do objeto
+     * @param y Posição Y do objeto
+     * @return Objeto em (x, y) na camada
+     */
     public ObjetoSimulacao getObjeto(Camada c, int x, int y) {
         return getCamada(c)[x][y];
     }
 
+    /**
+     * Retorna o objeto em uma localização em uma camada do mapa.
+     * @param c Camada
+     * @param l Localização do objeto
+     * @return Objeto na localização dada na camada
+     */
     public ObjetoSimulacao getObjeto(Camada c, Localizacao l) {
         return getObjeto(c, l.getX(), l.getY());
     }
 
-    private void setObjeto(Camada c, int x, int y, ObjetoSimulacao v) {
-        getCamada(c)[x][y] = v;
+    /**
+     * Retorna o objeto em uma localização no foreground do mapa.
+     * @param l Localização do objeto
+     * @return Objeto na localização dada no foreground
+     */
+    public ObjetoSimulacao getObjetoForeground(Localizacao l) {
+        return getObjeto(Camada.FOREGROUND, l);
     }
 
-    private void setObjeto(Camada c, Localizacao l, ObjetoSimulacao v) {
-        setObjeto(c, l.getX(), l.getY(), v);
+    /**
+     * Retorna o objeto em uma localização no background do mapa.
+     * @param l Localização do objeto
+     * @return Objeto na localização dada no background
+     */
+    public ObjetoSimulacao getObjetoBackground(Localizacao l) {
+        return getObjeto(Camada.BACKGROUND, l);
     }
 
+    /**
+     * Posiciona o objeto o em (x, y) na camada
+     * @param c Camada
+     * @param x Posição X
+     * @param y Posição Y
+     * @param o Objeto a ser posicionado
+     */
+    private void setObjeto(Camada c, int x, int y, ObjetoSimulacao o) {
+        getCamada(c)[x][y] = o;
+    }
+
+    /**
+     * Posiciona o objeto o na localização na camada
+     * @param c Camada
+     * @param l Localização
+     * @param o Objeto a ser posicionado
+     */
+    private void setObjeto(Camada c, Localizacao l, ObjetoSimulacao o) {
+        setObjeto(c, l.getX(), l.getY(), o);
+    }
+
+    /**
+     * Captura a lista de objetos válidos em todas as camadas do mapa. Útil para
+     * impedir que um mesmo objeto que se move seja atualizado mais de uma vez
+     * em uma iteração da simulação.
+     * @return Lista imutável de todos os objetos válidos da simulação.
+     */
     public List<ObjetoSimulacao> getObjetos() {
         List<ObjetoSimulacao> objetosValidos = new ArrayList<>();
-        
+
         for (Camada c : Camada.TODAS) {
             for (int y = getAltura() - 1; y >= 0; y--) {
                 for (int x = getLargura() - 1; x >= 0; x--) {
