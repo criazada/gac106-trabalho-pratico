@@ -46,6 +46,10 @@ public abstract class ObjetoSimulacao {
         return locAnterior;
     }
 
+    protected void setDirecao(Direcao direcao) {
+        locAnterior = direcao.para(locAtual);
+    }
+
     public Mapa getMapa() {
         return mapa;
     }
@@ -65,6 +69,10 @@ public abstract class ObjetoSimulacao {
         mapa.atualizarMapa(this);
     }
 
+    public Direcao calcularDirecao() {
+        return Direcao.calcular(locAnterior, locAtual);
+    }
+
     /**
      * Executa a ação do objeto em um passo da simulação
      */
@@ -77,7 +85,5 @@ public abstract class ObjetoSimulacao {
      * @param o O outro objeto
      * @return Transparência deste objeto na visão de outro objeto.
      */
-    public boolean transparentePara(ObjetoSimulacao o) {
-        return false;
-    }
+    public abstract boolean transparentePara(ObjetoSimulacao o);
 }

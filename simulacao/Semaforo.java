@@ -1,13 +1,11 @@
 package simulacao;
 
-import java.util.Random;
-
 public class Semaforo extends ObjetoSimulacao {
     private int contador;
     private boolean transparente;
 
-    public Semaforo(Localizacao localizacao, Mapa mapa, Random rng) {
-        super(Recurso.SEMAFORO_VERDE.getImagem(), localizacao, mapa, Mapa.Camada.FOREGROUND, rng);
+    public Semaforo(Localizacao localizacao, Mapa mapa) {
+        super(Recurso.SEMAFORO_VERDE.getImagem(), localizacao, mapa, Mapa.Camada.FOREGROUND, null);
     }
 
     @Override

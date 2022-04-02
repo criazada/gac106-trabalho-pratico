@@ -29,4 +29,9 @@ public abstract class ObjetoAmbulante extends ObjetoSimulacao {
         }
         return true;
     }
+
+    @Override
+    public boolean transparentePara(ObjetoSimulacao o) {
+        return false;
+    }
 }
