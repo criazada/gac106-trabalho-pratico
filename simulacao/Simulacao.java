@@ -17,8 +17,12 @@ public class Simulacao {
         int largura = mapa.getLargura();
         int altura = mapa.getAltura();
 
+        for (int i = 0; i < 35; i++) {
+            Semaforo semaforo = new Semaforo(new Localizacao(13, i), mapa, rand);
+            mapa.adicionarObjeto(semaforo);
+        }
         // For para ver como fica com mais veiculos (debug)
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 5; i++) {
             // Cria um veiculo em uma posicao aleatoria
             Veiculo veiculo = new Veiculo(new Localizacao(rand.nextInt(largura), rand.nextInt(altura)), mapa, rand);
             // Define a posicao destino aleatoriamente
