@@ -5,7 +5,7 @@ import javax.swing.*;
 
 /**
  * Fornece a visualizacao da simulacao
- * 
+ *
  * @author David J. Barnes and Michael Kolling and Luiz Merschmann
  */
 public class JanelaSimulacao extends JFrame {
@@ -25,7 +25,7 @@ public class JanelaSimulacao extends JFrame {
     /**
      * Mostra o estado atual do mapa.
      */
-    public void executarAcao() {
+    public void atualizar() {
         visaoMapa.preparePaint();
         for (ObjetoSimulacao objeto : mapa.getObjetos()) {
             Localizacao localizacao = objeto.getLocalizacao();

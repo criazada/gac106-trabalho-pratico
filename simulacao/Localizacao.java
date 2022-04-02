@@ -4,7 +4,7 @@ import java.util.Random;
 
 /**
  * Representa uma localização no mapa
- * 
+ *
  * @author David J. Barnes and Michael Kolling and Luiz Merschmann
  */
 public class Localizacao {
@@ -14,7 +14,7 @@ public class Localizacao {
 
     /**
      * Representa uma localização na cidade
-     * 
+     *
      * @param x Coordenada x: deve ser maior ou igual a 0.
      * @param y Coordenada y: deve ser maior ou igual a 0.
      */
@@ -33,7 +33,7 @@ public class Localizacao {
 
     /**
      * Gera a localizacao para se mover visando alcançar o destino
-     * 
+     *
      * @param localizacaoDestino: localizacao que se deseja alcancar.
      * @return Localizacao para onde se deve ir
      */
@@ -64,7 +64,7 @@ public class Localizacao {
 
     /**
      * Verificacao de igualdade de conteudo de objetos do tipo Localizacao.
-     * 
+     *
      * @return true: se a localizacao é igual.
      *         false: caso contrario.
      */

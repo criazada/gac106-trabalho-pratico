@@ -3,14 +3,21 @@ package simulacao;
 import java.awt.Image;
 
 public abstract class ObjetoSimulacao {
+    // Imagem que representa o objeto no mapa
     private Image imagem;
-    private Localizacao localizacao;
+    // Localização atual do objeto no mapa
+    private Localizacao locAtual;
+    // Localização anterior do objeto no mapa
+    private Localizacao locAnterior;
+    // Visão do mapa
     private Mapa mapa;
+    // Camada do objeto no mapa
     private Mapa.Camada camada;
 
     public ObjetoSimulacao(Image imagem, Localizacao localizacao, Mapa mapa, Mapa.Camada camada) {
         this.imagem = imagem;
-        this.localizacao = localizacao;
+        this.locAtual = localizacao;
+        this.locAnterior = localizacao;
         this.mapa = mapa;
         this.camada = camada;
     }
@@ -24,18 +31,30 @@ public abstract class ObjetoSimulacao {
     }
 
     public Localizacao getLocalizacao() {
-        return localizacao;
+        return locAtual;
+    }
+
+    public Localizacao getLocalizacaoAnterior() {
+        return locAnterior;
     }
 
     public Mapa getMapa() {
         return mapa;
     }
 
+    /**
+     * Atualiza a localização do objeto, salvando a posição atual em sua posição
+     * anterior.
+     * @param localizacao Nova localização
+     */
     public void setLocalizacao(Localizacao localizacao) {
-        Localizacao anterior = this.localizacao;
-        this.localizacao = localizacao;
-        mapa.atualizarMapa(getCamada(), this, anterior);
+        locAnterior = locAtual;
+        locAtual = localizacao;
+        mapa.atualizarMapa(this);
     }
 
+    /**
+     * Executa a ação do objeto em um passo da simulação
+     */
     public abstract void executarAcao();
 }
