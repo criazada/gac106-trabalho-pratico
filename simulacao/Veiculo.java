@@ -1,13 +1,15 @@
 package simulacao;
 
+import java.util.Random;
+
 /**
  * Representa os veiculos da simulacao.
  *
  * @author David J. Barnes and Michael Kolling and Luiz Merschmann
  */
 public class Veiculo extends ObjetoAmbulante {
-    public Veiculo(Localizacao localizacao, Mapa mapa) {
-        super(Recurso.CARRO.getImagem(), localizacao, mapa);
+    public Veiculo(Localizacao localizacao, Mapa mapa, Random rng) {
+        super(Recurso.CARRO.getImagem(), localizacao, mapa, rng);
     }
 
     @Override
