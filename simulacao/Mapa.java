@@ -9,12 +9,13 @@ import java.util.*;
  */
 public class Mapa {
     public enum Camada {
-        FOREGROUND, BACKGROUND;
+        FOREGROUND, MIDDLE, BACKGROUND;
 
-        public static final Camada[] TODAS = { BACKGROUND, FOREGROUND };
+        public static final Camada[] TODAS = { BACKGROUND, MIDDLE, FOREGROUND };
     }
 
     private ObjetoSimulacao[][] foreground;
+    private ObjetoSimulacao[][] middle;
     private ObjetoSimulacao[][] background;
 
     private int largura;
@@ -33,6 +34,7 @@ public class Mapa {
         this.largura = largura;
         this.altura = altura;
         foreground = new ObjetoSimulacao[altura][largura];
+        middle = new ObjetoSimulacao[altura][largura];
         background = new ObjetoSimulacao[altura][largura];
     }
 
@@ -85,6 +87,8 @@ public class Mapa {
                 return foreground;
             case BACKGROUND:
                 return background;
+            case MIDDLE:
+                return middle;
             default:
                 System.out.println("getCamada: camada inválida");
                 return null;
@@ -119,6 +123,15 @@ public class Mapa {
      */
     public ObjetoSimulacao getObjetoForeground(Localizacao l) {
         return getObjeto(Camada.FOREGROUND, l);
+    }
+
+    /**
+     * Retorna o objeto em uma localização na camada middle do mapa.
+     * @param l Localização do objeto
+     * @return Objeto na localização dada na camada middle
+     */
+    public ObjetoSimulacao getObjetoMiddle(Localizacao l) {
+        return getObjeto(Camada.MIDDLE, l);
     }
 
     /**
