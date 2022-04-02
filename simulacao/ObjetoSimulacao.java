@@ -1,6 +1,7 @@
 package simulacao;
 
 import java.awt.Image;
+import java.util.Random;
 
 public abstract class ObjetoSimulacao {
     // Imagem que representa o objeto no mapa
@@ -13,13 +14,16 @@ public abstract class ObjetoSimulacao {
     private Mapa mapa;
     // Camada do objeto no mapa
     private Mapa.Camada camada;
+    // RNG
+    private Random rng;
 
-    public ObjetoSimulacao(Image imagem, Localizacao localizacao, Mapa mapa, Mapa.Camada camada) {
+    public ObjetoSimulacao(Image imagem, Localizacao localizacao, Mapa mapa, Mapa.Camada camada, Random rng) {
         this.imagem = imagem;
         this.locAtual = localizacao;
         this.locAnterior = localizacao;
         this.mapa = mapa;
         this.camada = camada;
+        this.rng = rng;
     }
 
     public Mapa.Camada getCamada() {
@@ -40,6 +44,10 @@ public abstract class ObjetoSimulacao {
 
     public Mapa getMapa() {
         return mapa;
+    }
+
+    public Random getRng() {
+        return rng;
     }
 
     /**

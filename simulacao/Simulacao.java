@@ -18,9 +18,9 @@ public class Simulacao {
         int altura = mapa.getAltura();
 
         // For para ver como fica com mais veiculos (debug)
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 100; i++) {
             // Cria um veiculo em uma posicao aleatoria
-            Veiculo veiculo = new Veiculo(new Localizacao(rand.nextInt(largura), rand.nextInt(altura)), mapa);
+            Veiculo veiculo = new Veiculo(new Localizacao(rand.nextInt(largura), rand.nextInt(altura)), mapa, rand);
             // Define a posicao destino aleatoriamente
             veiculo.setLocalizacaoDestino(new Localizacao(rand.nextInt(largura), rand.nextInt(altura)));
             mapa.adicionarObjeto(veiculo);
