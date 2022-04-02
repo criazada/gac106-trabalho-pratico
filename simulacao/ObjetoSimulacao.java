@@ -57,4 +57,15 @@ public abstract class ObjetoSimulacao {
      * Executa a ação do objeto em um passo da simulação
      */
     public abstract void executarAcao();
+    
+    /**
+     * Verifica se este objeto é transparente para outro objeto.
+     * Útil caso somente alguns tipos de objetos possam passar por este.
+     * Mais relevante para objetos no background.
+     * @param o O outro objeto
+     * @return Transparência deste objeto na visão de outro objeto.
+     */
+    public boolean transparentePara(ObjetoSimulacao o) {
+        return false;
+    }
 }

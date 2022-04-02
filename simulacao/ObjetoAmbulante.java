@@ -17,4 +17,15 @@ public abstract class ObjetoAmbulante extends ObjetoSimulacao {
     public void setLocalizacaoDestino(Localizacao localizacaoDestino) {
         this.localizacaoDestino = localizacaoDestino;
     }
+
+    /**
+     * Verifica se a localização em questão está livre para este objeto.
+     * @param l Localização
+     */
+    public boolean livre(Localizacao l) {
+        for (ObjetoSimulacao o : getMapa().getObjetosEm(l)) {
+            if (!o.transparentePara(this)) return false;
+        }
+        return true;
+    }
 }
