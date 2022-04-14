@@ -25,7 +25,7 @@ public class Simulacao {
                 Rua rua;
                 Localizacao l = new Localizacao(j, i);
                 if (j == 13) {
-                    rua = new Rua(d, Direcao.SUL, l, mapa);
+                    rua = new Rua(new Direcao[]{d, Direcao.SUL}, l, mapa);
                 } else {
                     rua = new Rua(d, l, mapa);
                 }

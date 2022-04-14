@@ -5,7 +5,7 @@ import java.awt.Image;
 public class Rua extends ObjetoSimulacao {
     private Direcao[] direcoes;
     
-    private Rua(Direcao[] direcoes, Localizacao localizacao, Mapa mapa) {
+    public Rua(Direcao[] direcoes, Localizacao localizacao, Mapa mapa) {
         super(null, localizacao, mapa, Mapa.Camada.BACKGROUND, null);
         Recurso r = null;
         switch (direcoes[0]) {
@@ -36,15 +36,11 @@ public class Rua extends ObjetoSimulacao {
         this(new Direcao[]{direcao}, localizacao, mapa);
     }
 
-    public Rua(Direcao direcao, Direcao direcaoSecundaria, Localizacao localizacao, Mapa mapa) {
-        this(new Direcao[]{direcao, direcaoSecundaria}, localizacao, mapa);
-    }
-
     @Override
     public Image getImagem() {
         return super.getImagem();
     }
-    
+
     @Override
     public boolean transparentePara(ObjetoSimulacao o) {
         Direcao desejada = Direcao.calcular(o.getLocalizacao(), getLocalizacao());
