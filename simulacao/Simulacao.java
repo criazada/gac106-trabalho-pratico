@@ -14,9 +14,10 @@ public class Simulacao {
     private Mapa mapa;
 
     public Simulacao() {
-        Random rand = new Random(12345);
+        Random rand = new Random(12347);
         Gerador g = new Gerador(100, 100, rand);
         g.gerar();
+
         /*
         mapa = new Mapa();
         int largura = mapa.getLargura();

@@ -108,7 +108,7 @@ public class Gerador {
             l = largura;
         }
 
-        return new Segmento(x, y, o, l, Segmento.AVENIDA, true);
+        return new Segmento(x, y, o, l / 4, Segmento.RUA, true);
     }
 
     public List<Segmento> gerar() {
@@ -129,6 +129,12 @@ public class Gerador {
             }
         }
 
+        imprimir(S);
+
+        return S;
+    }
+
+    public void imprimir(List<Segmento> S) {
         BufferedImage im = new BufferedImage(largura, altura, BufferedImage.TYPE_3BYTE_BGR);
         for (int x = 0; x < largura; x++) {
             for (int y = 0; y < altura; y++) {
@@ -149,8 +155,6 @@ public class Gerador {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        return S;
     }
 
     private void printClip(int[] clip) {
@@ -184,7 +188,7 @@ public class Gerador {
             for (Segmento s : S) {
                 if (realizaJuncao(J, s, e.r)) {
                     continue;
-                } else if (s.muitoProximo(e.r)) {
+                } if (s.muitoProximo(e.r)) {
                     ok = false;
                     break;
                 } else if (s.intersecta(e.r)) {
@@ -212,8 +216,7 @@ public class Gerador {
 
     private List<EntradaSegmento> globalGoals(EntradaSegmento e) {
         List<EntradaSegmento> ES = new ArrayList<>();
-        int t = e.r.getTipo() == Segmento.AVENIDA ? 20 : 5;
-        for (int i = 0; i < t; i++) {
+        for (int i = 0; i < 5; i++) {
             Segmento s = gerarCandidato(e);
             ES.add(new EntradaSegmento(i, s));
         }
@@ -223,25 +226,26 @@ public class Gerador {
     private Segmento gerarCandidato(EntradaSegmento e) {
         boolean segueReto = rng.nextInt(3) < 2;
         int l;
-        int x, y, xd, yd;
+        int x, y, delta;
         Direcao d;
         int t;
         if (segueReto) {
             t = e.r.getTipo();
             d = e.r.getDirecao();
             l = escalar(e.r.getComprimento(), 2);
-            xd = e.r.getComprimento();
-            x = e.r.getX() + d.componenteX() * xd;
-            y = e.r.getY() + d.componenteY() * xd;
+            delta = e.r.getComprimento();
+            x = e.r.getX() + d.componenteX() * delta;
+            y = e.r.getY() + d.componenteY() * delta;
         } else {
+            Direcao ed = e.r.getDirecao();
             d = direcaoDensa(e.r.getX(), e.r.getY());
-            while (d == e.r.getDirecao() || d == e.r.getDirecao().oposta()) {
+            while (d == ed || d == ed.oposta()) {
                 d = Direcao.TODAS[rng.nextInt(4)];
             }
             l = ((int) Math.floor(rng.nextDouble() * (largura / 7))) + 7;
-            xd = selecionar(0, e.r.getComprimento() / 2);
-            x = e.r.getX() + e.r.getDirecao().componenteX() * xd;
-            y = e.r.getY() + e.r.getDirecao().componenteY() * xd;
+            delta = selecionar(0, e.r.getComprimento() / 2);
+            x = e.r.getX() + ed.componenteX() * delta + (d == Direcao.OESTE ? 1 : 0);
+            y = e.r.getY() + ed.componenteY() * delta + (d == Direcao.NORTE ? 1 : 0);
             t = Segmento.RUA;
         }
 

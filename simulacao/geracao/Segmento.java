@@ -53,11 +53,12 @@ public class Segmento {
     }
 
     public boolean intersecta(Segmento s) {
+        if (direcao == s.direcao || direcao == s.direcao.oposta()) return false;
         if (clip[0] >= s.clip[2] || s.clip[0] >= clip[2]) return false;
         if (clip[3] >= s.clip[1] || s.clip[3] >= clip[1]) return false;
         return true;
     }
-    
+
     public boolean muitoProximo(Segmento s) {
         if (clip[0] >= s.clip[2] + 2 || s.clip[0] >= clip[2] + 2) return false;
         if (clip[3] >= s.clip[1] + 2 || s.clip[3] >= clip[1] + 2) return false;
