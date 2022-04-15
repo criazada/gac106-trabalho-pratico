@@ -2,6 +2,8 @@ package simulacao;
 
 import java.util.Random;
 
+import simulacao.geracao.Gerador;
+
 /**
  * Responsavel pela simulacao.
  *
@@ -12,7 +14,10 @@ public class Simulacao {
     private Mapa mapa;
 
     public Simulacao() {
-        Random rand = new Random(12346);
+        Random rand = new Random(12345);
+        Gerador g = new Gerador(100, 100, rand);
+        g.gerar();
+        /*
         mapa = new Mapa();
         int largura = mapa.getLargura();
         int altura = mapa.getAltura();
@@ -43,6 +48,7 @@ public class Simulacao {
         }
         // Inicializando o mapa com o veículo
         janelaSimulacao = new JanelaSimulacao(mapa);
+        */
     }
 
     /**

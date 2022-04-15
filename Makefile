@@ -9,4 +9,4 @@ build: $(MAINS)
 $(MAINS): $(JAVA_FILES) clean
 	javac $(@:%.class=%.java)
 clean:
-	rm -f simulacao/*.class
+	rm -f simulacao/*.class simulacao/geracao/*.class
