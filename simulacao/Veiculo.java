@@ -12,9 +12,9 @@ public class Veiculo extends ObjetoAmbulante {
     private List<Localizacao> caminho;
     private int passo;
 
-    public Veiculo(Localizacao localizacao, Mapa mapa, Random rng) {
+    public Veiculo(Localizacao localizacao, Localizacao destino, Mapa mapa, Random rng) {
         super(Recurso.CARRO.getImagem(), localizacao, mapa, rng);
-        super.setLocalizacaoDestino(localizacao);
+        setLocalizacaoDestino(destino);
     }
 
     /**
@@ -41,8 +41,11 @@ public class Veiculo extends ObjetoAmbulante {
         Localizacao destino = getLocalizacaoDestino();
         if (destino != null) {
             Localizacao prox = proximaLocalizacao();
+            if (prox == getLocalizacao()) {
+                getMapa().removerObjeto(this);
+            }
             // carro só anda se o espaço de destino está livre
-            if (livre(prox)) {
+            else if (livre(prox)) {
                 setLocalizacao(prox);
                 passo++;
             }

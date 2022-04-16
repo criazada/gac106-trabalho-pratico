@@ -3,6 +3,7 @@ package simulacao;
 import java.util.List;
 import java.util.Random;
 
+import simulacao.Mapa.Camada;
 import simulacao.geracao.Gerador;
 import simulacao.geracao.Segmento;
 
@@ -39,20 +40,29 @@ public class Simulacao {
         }
         mapa.atualizarGrafos();
 
-        Veiculo v = new Veiculo(lRua, mapa, rand);
-        int x = 0;
-        int y = 0;
-        while (!(mapa.getObjeto(Mapa.Camada.BACKGROUND, x, y) instanceof Rua)) {
-            x = rand.nextInt(largura);
-            y = rand.nextInt(altura);
+        long inicio = System.nanoTime();
+        for (int i = 0; i < 100; i++) {
+            Localizacao s = getRuaAleatoria(rand);
+            Localizacao d = getRuaAleatoria(rand);
+            Veiculo v = new Veiculo(s, d, mapa, rand);
+            mapa.adicionarObjeto(v);
+            ((Rua) mapa.getObjeto(Camada.BACKGROUND, d)).marcar(true);;
         }
-        ((Rua) mapa.getObjeto(Mapa.Camada.BACKGROUND, x, y)).marcar(true);
-
-        mapa.adicionarObjeto(v);
-        v.setLocalizacaoDestino(new Localizacao(x, y));
+        int tempo = (int) ((System.nanoTime() - inicio) / 1000000);
+        System.out.printf("T: %d%n", tempo);
 
         // Inicializando o mapa com o veículo
         janelaSimulacao = new JanelaSimulacao(mapa);
+    }
+
+    private Localizacao getRuaAleatoria(Random r) {
+        int x = r.nextInt(mapa.getLargura());
+        int y = r.nextInt(mapa.getAltura());
+        while (!(mapa.getObjeto(Mapa.Camada.BACKGROUND, x, y) instanceof Rua)) {
+            x = r.nextInt(mapa.getLargura());
+            y = r.nextInt(mapa.getAltura());
+        } 
+        return new Localizacao(x, y);
     }
 
     /**

@@ -78,7 +78,7 @@ public class Mapa {
         Camada c = o.getCamada();
         Localizacao anterior = o.getLocalizacaoAnterior();
         if (getObjeto(c, anterior) != o) {
-            System.out.printf("atualizarMapa: ObjetoSimulacao %s tentou atualizar posição que não é sua%n", o);
+            System.out.printf("atualizarMapa: %s tentou atualizar posicao que nao e sua%n", o);
         }
         setObjeto(c, anterior, null);
         setObjeto(c, o.getLocalizacao(), o);
