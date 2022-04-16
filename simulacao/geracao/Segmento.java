@@ -76,8 +76,8 @@ public class Segmento {
         if (clip[0] >= s.clip[2] + 1 || s.clip[0] >= clip[2] + 1) return false;
         if (clip[3] >= s.clip[1] + 1 || s.clip[3] >= clip[1] + 1) return false;
         if (direcao == s.direcao || direcao == s.direcao.oposta()) {
-            if ((direcao == Direcao.NORTE || direcao == Direcao.SUL) && clip[0] == s.clip[0] && (clip[3] >= s.clip[1] || s.clip[3] >= clip[1])) return false;
-            if ((direcao == Direcao.LESTE || direcao == Direcao.OESTE) && clip[1] == s.clip[1] && (clip[0] >= s.clip[2] || s.clip[0] >= clip[2])) return false;
+            if (direcao.componenteY() != 0 && clip[0] == s.clip[0] && (clip[3] >= s.clip[1] || s.clip[3] >= clip[1])) return false;
+            if (direcao.componenteX() != 0 && clip[1] == s.clip[1] && (clip[0] >= s.clip[2] || s.clip[0] >= clip[2])) return false;
         } else {
             return false;
         }
