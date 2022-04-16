@@ -153,7 +153,7 @@ public class Mapa {
         Localizacao l = o.getLocalizacao();
         int s = indiceVertice(l.getX(), l.getY());
 
-        int[] prev = G.dijkstra(s);
+        int[] prev = G.dijkstra(s).prev;
         List<Localizacao> passos = new ArrayList<>();
 
         Localizacao d = o.getLocalizacaoDestino();
@@ -167,6 +167,31 @@ public class Mapa {
 
         Collections.reverse(passos);
         return Collections.unmodifiableList(passos);
+    }
+
+    public int[][] getDists(Veiculo o) {
+        return getDists(o, GVeiculo);
+    }
+
+    public int[][] getDists(PedestreAmbulante p) {
+        return getDists(p, GPedestre);
+    }
+
+    private int[][] getDists(ObjetoAmbulante o, Grafo G) {
+        Localizacao l = o.getLocalizacao();
+        int s = indiceVertice(l.getX(), l.getY());
+
+        int[] dist = G.dijkstra(s).dist;
+
+        int[][] dists = new int[altura][largura];
+
+        for (int y = 0; y < altura; y++) {
+            for (int x = 0; x < largura; x++) {
+                dists[y][x] = dist[indiceVertice(x, y)];                
+            }
+        }
+
+        return dists;
     }
 
     /**

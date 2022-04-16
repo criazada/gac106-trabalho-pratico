@@ -23,7 +23,7 @@ public class Grafo {
         G[v].add(a);
     }
 
-    public int[] dijkstra(int s) {
+    public ResultadoDijkstra dijkstra(int s) {
         boolean[] visitado = new boolean[n];
         int[] dist = new int[n];
         int[] prev = new int[n];
@@ -57,7 +57,7 @@ public class Grafo {
             }
         }
 
-        return prev;
+        return new ResultadoDijkstra(dist, prev);
     }
 
     private class EntradaVertice implements Comparable<EntradaVertice> {
@@ -72,6 +72,16 @@ public class Grafo {
         @Override
         public int compareTo(EntradaVertice o) {
             return Integer.compare(dist, o.dist);
+        }
+    }
+
+    public class ResultadoDijkstra {
+        public int[] dist;
+        public int[] prev;
+
+        public ResultadoDijkstra(int[] dist, int[] prev) {
+            this.dist = dist;
+            this.prev = prev;
         }
     }
 }
