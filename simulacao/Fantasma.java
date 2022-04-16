@@ -3,8 +3,7 @@ package simulacao;
 public class Fantasma extends ObjetoSimulacao {
 
     public Fantasma() {
-        super(null, null, null, null, null);
-        //TODO Auto-generated constructor stub
+        super();
     }
 
     @Override

@@ -6,39 +6,43 @@ public class Rua extends ObjetoSimulacao {
     private Direcao[] direcoes;
     
     public Rua(Direcao[] direcoes, Localizacao localizacao, Mapa mapa) {
-        super(null, localizacao, mapa, Mapa.Camada.BACKGROUND, null);
+        super((Image) null, localizacao, mapa, Mapa.Camada.BACKGROUND, null);
         Recurso r = null;
-        switch (direcoes[0]) {
-            case NORTE:
-                r = Recurso.RUA_NORTE;
-                break;
-    
-            case SUL:
-                r = Recurso.RUA_SUL;
-                break;
-    
-            case LESTE:
-                r = Recurso.RUA_LESTE;
-                break;
-    
-            case OESTE:
-                r = Recurso.RUA_OESTE;
-                break;
-
-            default:
-                break;
+        Image[] imagens = new Image[direcoes.length + 1];
+        imagens[0] = Recurso.FUNDO_RUA.getImagem();
+        for (int i = 0; i < direcoes.length; i++) {
+            imagens[i+1] = getSetaParaDirecao(direcoes[i]);
         }
-        setImagem(r.getImagem());
+        setImagens(imagens);
         this.direcoes = direcoes;
+    }
+
+    private Image getSetaParaDirecao(Direcao d) {
+        if (d == null) return null;
+
+        Recurso r;
+        switch (d) {
+            case NORTE:
+                r = Recurso.SETA_NORTE;
+                break;
+            case SUL:
+                r = Recurso.SETA_SUL;
+                break;
+            case LESTE:
+                r = Recurso.SETA_LESTE;
+                break;
+            case OESTE:
+                r = Recurso.SETA_OESTE;
+                break;
+            default:
+                r = null;
+        }
+
+        return r.getImagem();
     }
 
     public Rua(Direcao direcao, Localizacao localizacao, Mapa mapa) {
         this(new Direcao[]{direcao}, localizacao, mapa);
-    }
-
-    @Override
-    public Image getImagem() {
-        return super.getImagem();
     }
 
     @Override

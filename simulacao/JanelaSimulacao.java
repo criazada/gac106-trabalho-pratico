@@ -29,7 +29,11 @@ public class JanelaSimulacao extends JFrame {
         visaoMapa.preparePaint();
         for (ObjetoSimulacao objeto : mapa.getObjetos()) {
             Localizacao localizacao = objeto.getLocalizacao();
-            visaoMapa.desenharImagem(localizacao.getX(), localizacao.getY(), objeto.getImagem());
+            int x = localizacao.getX();
+            int y = localizacao.getY();
+            for (Image i : objeto.getImagens()) {
+                visaoMapa.desenharImagem(x, y, i);
+            }
         }
         visaoMapa.repaint();
     }

@@ -5,7 +5,7 @@ import java.util.Random;
 
 public abstract class ObjetoSimulacao {
     // Imagem que representa o objeto no mapa
-    private Image imagem;
+    private Image[] imagens;
     // Localização atual do objeto no mapa
     private Localizacao locAtual;
     // Localização anterior do objeto no mapa
@@ -17,8 +17,8 @@ public abstract class ObjetoSimulacao {
     // RNG
     private Random rng;
 
-    public ObjetoSimulacao(Image imagem, Localizacao localizacao, Mapa mapa, Mapa.Camada camada, Random rng) {
-        this.imagem = imagem;
+    public ObjetoSimulacao(Image[] imagens, Localizacao localizacao, Mapa mapa, Mapa.Camada camada, Random rng) {
+        this.imagens = imagens;
         this.locAtual = localizacao;
         this.locAnterior = localizacao;
         this.mapa = mapa;
@@ -26,16 +26,26 @@ public abstract class ObjetoSimulacao {
         this.rng = rng;
     }
 
+    public ObjetoSimulacao(Image imagem, Localizacao localizacao, Mapa mapa, Mapa.Camada camada, Random rng) {
+        this(new Image[]{imagem}, localizacao, mapa, camada, rng);
+    }
+
+    public ObjetoSimulacao() {}
+
     public Mapa.Camada getCamada() {
         return camada;
     }
 
-    public Image getImagem() {
-        return imagem;
+    public Image[] getImagens() {
+        return imagens;
     }
 
     public void setImagem(Image imagem) {
-        this.imagem = imagem;
+        this.imagens = new Image[]{imagem};
+    }
+
+    public void setImagens(Image[] imagens) {
+        this.imagens = imagens;
     }
 
     public Localizacao getLocalizacao() {

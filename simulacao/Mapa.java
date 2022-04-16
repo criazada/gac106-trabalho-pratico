@@ -116,7 +116,7 @@ public class Mapa {
             int y1 = prox[1] + y;
             
             if (x1 < 0 || x1 >= largura || y1 < 0 || y1 >= altura) continue;
-            
+
             boolean passavel = true;
             for (ObjetoSimulacao s : getObjetosEm(x1, y1)) {
                 if (!s.transparentePara(f)) {
