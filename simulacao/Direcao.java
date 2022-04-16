@@ -65,9 +65,9 @@ public enum Direcao {
         } else if (dx < 0) {
             return LESTE;
         } else if (dy < 0) {
-            return NORTE;
-        } else {
             return SUL;
+        } else {
+            return NORTE;
         }
     }
 }

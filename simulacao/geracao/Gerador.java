@@ -147,7 +147,7 @@ public class Gerador {
         }
 
         // Cria um novo segmento partindo de (x, y) com comprimento l/4
-        return new Segmento(x, y, o, l / 4, Segmento.RUA, true);
+        return new Segmento(x, y, o, l / 4, Segmento.AVENIDA, true);
     }
 
     // Gera o mapa em si
@@ -245,10 +245,8 @@ public class Gerador {
         for (Segmento s : S) {
             int[] clip = s.getClip();
             // printClip(clip);
-            Direcao d = s.getDirecao();
-            int ex = Math.abs(d.componenteY()) + Math.abs(d.componenteX());
-            for (int x = clip[0] * 4; x <= clip[2] * 4 + ex && x < largura; x++) {
-                for (int y = clip[3] * 4; y <= clip[1] * 4 + ex && y < altura; y++) {
+            for (int x = clip[0] * 4; x <= clip[2] * 4 + 1 && x < largura; x++) {
+                for (int y = clip[3] * 4; y <= clip[1] * 4 + 1 && y < altura; y++) {
                     // int cor = (s.getX() == x / 4 && s.getY() == y / 2) ? 0xFFFF00 : (s.segueReto ? 0xFF00FF : 0x00FFFF);
                     int cor = 0;
                     im.setRGB(x, y, cor);
@@ -260,6 +258,37 @@ public class Gerador {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public Direcao[][][] gerarRuas(List<Segmento> S) {
+        int altura = this.altura * 4;
+        int largura = this.largura * 4;
+        Direcao[][][] ruas = new Direcao[altura][largura][4];
+
+        for (Segmento s : S) {
+            int[] clip = s.getClip();
+
+            for (int x = clip[0] * 4; x <= clip[2] * 4 + 1 && x < largura; x++) {
+                for (int y = clip[3] * 4; y <= clip[1] * 4 + 1 && y < altura; y++) {
+                    Direcao d = s.getDirecao();
+                    if (d.componenteY() != 0) {
+                        d = x == clip[2] * 4 ? Direcao.SUL : Direcao.NORTE;
+                    } else {
+                        d = y == clip[1] * 4 ? Direcao.OESTE : Direcao.LESTE;
+                    }
+
+                    for (int i = 0; i < 4; i++) {
+                        if (ruas[y][x][i] == d) break;
+                        else if (ruas[y][x][i] == null) {
+                            ruas[y][x][i] = d;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        return ruas;
     }
 
     // Realiza a verificação da possibilidade de um segmento ser colocado, e o
@@ -334,7 +363,8 @@ public class Gerador {
     // Gera candidatos de segmentos saindo de um segmento
     private List<EntradaSegmento> globalGoals(EntradaSegmento e) {
         List<EntradaSegmento> ES = new ArrayList<>();
-        for (int i = 0; i < 3; i++) {
+        int t = e.r.getTipo() == Segmento.AVENIDA ? 5 : 3;
+        for (int i = 0; i < t; i++) {
             Segmento s = gerarCandidato(e);
             ES.add(new EntradaSegmento(i, s));
         }

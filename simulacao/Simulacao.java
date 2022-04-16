@@ -1,8 +1,10 @@
 package simulacao;
 
+import java.util.List;
 import java.util.Random;
 
 import simulacao.geracao.Gerador;
+import simulacao.geracao.Segmento;
 
 /**
  * Responsavel pela simulacao.
@@ -14,28 +16,23 @@ public class Simulacao {
     private Mapa mapa;
 
     public Simulacao() {
-        Random rand = new Random(12347);
-        Gerador g = new Gerador(100, 100, rand);
-        g.gerar();
+        Random rand = new Random(12345);
+        int largura = 64;
+        int altura = 64;
+        Gerador g = new Gerador(largura, altura, rand);
+        mapa = new Mapa(largura, altura);
 
-        /*
-        mapa = new Mapa();
-        int largura = mapa.getLargura();
-        int altura = mapa.getAltura();
-
-        for (int i = 10; i < 25; i++) {
-            Semaforo semaforo = new Semaforo(new Localizacao(13, i), mapa);
-            mapa.adicionarObjeto(semaforo);
-            Direcao d = i % 2 == 0 ? Direcao.LESTE : Direcao.OESTE;
-            for (int j = 10; j < 17; j++) {
-                Rua rua;
-                Localizacao l = new Localizacao(j, i);
-                if (j == 13) {
-                    rua = new Rua(new Direcao[]{d, Direcao.SUL}, l, mapa);
+        List<Segmento> S = g.gerar();
+        Direcao[][][] ruas = g.gerarRuas(S);
+        for (int i = 0; i < altura; i++) {
+            for (int j = 0; j < largura; j++) {
+                if (ruas[i][j][0] != null) {
+                    Rua rua = new Rua(ruas[i][j], new Localizacao(j, i), mapa);
+                    mapa.adicionarObjeto(rua);
                 } else {
-                    rua = new Rua(d, l, mapa);
+                    Calcada c = new Calcada(new Localizacao(j, i), mapa);
+                    mapa.adicionarObjeto(c);
                 }
-                mapa.adicionarObjeto(rua);
             }
         }
 
@@ -47,9 +44,11 @@ public class Simulacao {
             veiculo.setLocalizacaoDestino(new Localizacao(rand.nextInt(largura), rand.nextInt(altura)));
             mapa.adicionarObjeto(veiculo);
         }
+        Veiculo veiculo = new Veiculo(new Localizacao(0, 0), mapa, rand);
+        veiculo.setLocalizacaoDestino(new Localizacao(35, 35));
+        mapa.adicionarObjeto(veiculo);
         // Inicializando o mapa com o veículo
         janelaSimulacao = new JanelaSimulacao(mapa);
-        */
     }
 
     /**
@@ -62,7 +61,7 @@ public class Simulacao {
             long inicio = System.nanoTime();
             iteracao();
             int tempo = (int) ((System.nanoTime() - inicio) / 1000000);
-            System.out.println(tempo);
+            System.out.printf("T: %d  \r", tempo);
             int t = 100 - tempo;
             esperar(t);
         }
