@@ -21,8 +21,8 @@ public class Mapa {
     private ObjetoSimulacao[][] middle;
     private ObjetoSimulacao[][] background;
 
-    private Grafo GPedestre;
-    private Grafo GVeiculo;
+    public Grafo GPedestre;
+    public Grafo GVeiculo;
 
     private int largura;
     private int altura;
@@ -149,7 +149,7 @@ public class Mapa {
 
         Localizacao d = o.getLocalizacaoDestino();
         int v = indiceVertice(d.getX(), d.getY());
-        while (v != -1 && v != s) {
+        while (prev[v] != -1) {
             int x = verticeParaX(v);
             int y = verticeParaY(v);
             passos.add(new Localizacao(x, y));
