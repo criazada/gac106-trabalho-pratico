@@ -141,10 +141,19 @@ public class Mapa {
         }
     }
 
-    public List<Localizacao> getCaminhoParaDestino(Veiculo o) {
+    public List<Localizacao> getCaminhoParaDestino(Veiculo o){
+        return getCaminhoParaDestino(o, GVeiculo);
+    }
+
+    public List<Localizacao> getCaminhoParaDestino(PedestreAmbulante p){
+        return getCaminhoParaDestino(p, GPedestre);
+    }
+
+    private List<Localizacao> getCaminhoParaDestino(ObjetoAmbulante o, Grafo G) {
         Localizacao l = o.getLocalizacao();
         int s = indiceVertice(l.getX(), l.getY());
-        int[] prev = GVeiculo.dijkstra(s);
+
+        int[] prev = G.dijkstra(s);
         List<Localizacao> passos = new ArrayList<>();
 
         Localizacao d = o.getLocalizacaoDestino();
