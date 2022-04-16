@@ -1,7 +1,5 @@
 package simulacao;
 
-import java.util.Random;
-
 import simulacao.Mapa.Camada;
 
 public class Calcada extends ObjetoSimulacao {

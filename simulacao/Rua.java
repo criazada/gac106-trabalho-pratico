@@ -43,6 +43,7 @@ public class Rua extends ObjetoSimulacao {
 
     @Override
     public boolean transparentePara(ObjetoSimulacao o) {
+        if (o instanceof Fantasma) return false;
         Direcao desejada = Direcao.calcular(o.getLocalizacao(), getLocalizacao());
         for (Direcao d : direcoes) {
             if (d == desejada) return true;

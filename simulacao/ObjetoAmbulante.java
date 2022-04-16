@@ -32,6 +32,6 @@ public abstract class ObjetoAmbulante extends ObjetoSimulacao {
 
     @Override
     public boolean transparentePara(ObjetoSimulacao o) {
-        return false;
+        return o instanceof Fantasma;
     }
 }

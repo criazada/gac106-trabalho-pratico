@@ -29,6 +29,6 @@ public class Semaforo extends ObjetoSimulacao {
 
     @Override
     public boolean transparentePara(ObjetoSimulacao o) {
-        return transparente;
+        return transparente || (o instanceof FantasmaVeiculo);
     }
 }

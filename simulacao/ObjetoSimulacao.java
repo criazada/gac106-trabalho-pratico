@@ -66,7 +66,9 @@ public abstract class ObjetoSimulacao {
     public void setLocalizacao(Localizacao localizacao) {
         locAnterior = locAtual;
         locAtual = localizacao;
-        mapa.atualizarMapa(this);
+        if (mapa != null) {
+            mapa.atualizarMapa(this);
+        }
     }
 
     public Direcao calcularDirecao() {

@@ -47,6 +47,7 @@ public class Simulacao {
         Veiculo veiculo = new Veiculo(new Localizacao(0, 0), mapa, rand);
         veiculo.setLocalizacaoDestino(new Localizacao(35, 35));
         mapa.adicionarObjeto(veiculo);
+        mapa.atualizarGrafos();
         // Inicializando o mapa com o veículo
         janelaSimulacao = new JanelaSimulacao(mapa);
     }

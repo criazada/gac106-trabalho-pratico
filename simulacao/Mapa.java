@@ -2,6 +2,9 @@ package simulacao;
 
 import java.util.*;
 
+import simulacao.grafo.Aresta;
+import simulacao.grafo.Grafo;
+
 /**
  * Representa um mapa com todos os itens que participam da simulacao
  *
@@ -17,6 +20,9 @@ public class Mapa {
     private ObjetoSimulacao[][] foreground;
     private ObjetoSimulacao[][] middle;
     private ObjetoSimulacao[][] background;
+
+    private Grafo GPedestre;
+    private Grafo GVeiculo;
 
     private int largura;
     private int altura;
@@ -36,6 +42,8 @@ public class Mapa {
         foreground = new ObjetoSimulacao[altura][largura];
         middle = new ObjetoSimulacao[altura][largura];
         background = new ObjetoSimulacao[altura][largura];
+        GPedestre = new Grafo(largura * altura);
+        GVeiculo = new Grafo(largura * altura);
     }
 
     /**
@@ -74,6 +82,55 @@ public class Mapa {
         }
         setObjeto(c, anterior, null);
         setObjeto(c, o.getLocalizacao(), o);
+    }
+
+    private void atualizarGrafo(Grafo G, Fantasma f) {
+        G.limpar();
+        boolean[][] visitado = new boolean[altura][largura];
+        for (int y = 0; y < altura; y++) {
+            for (int x = 0; x < largura; x++) {
+                dfs(G, f, visitado, x, y);
+            }
+        }
+    }
+
+    private int indiceVertice(int x, int y) {
+        return y * largura + x;
+    }
+
+    public void atualizarGrafos() {
+        atualizarGrafo(GPedestre, new Fantasma());
+        atualizarGrafo(GVeiculo, new FantasmaVeiculo());
+    }
+
+    private void dfs(Grafo G, Fantasma f, boolean[][] visitado, int x, int y) {
+        if (visitado[y][x]) return;
+        visitado[y][x] = true;
+
+        
+        int[][] p = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
+        int u = indiceVertice(x, y);
+        for (int[] prox : p) {
+            f.setLocalizacao(new Localizacao(x, y));
+            int x1 = prox[0] + x;
+            int y1 = prox[1] + y;
+            
+            if (x1 < 0 || x1 >= largura || y1 < 0 || y1 >= altura) continue;
+            
+            boolean passavel = true;
+            for (ObjetoSimulacao s : getObjetosEm(x1, y1)) {
+                if (!s.transparentePara(f)) {
+                    passavel = false;
+                    break;
+                }
+            }
+
+            if (passavel) {
+                int v = indiceVertice(x1, y1);
+                G.addAresta(u, new Aresta(v, 1));
+                dfs(G, f, visitado, x1, y1);
+            }
+        }
     }
 
     /**
@@ -149,9 +206,13 @@ public class Mapa {
      * @return Os objetos na localização
      */
     public List<ObjetoSimulacao> getObjetosEm(Localizacao l) {
+        return getObjetosEm(l.getX(), l.getY());
+    }
+
+    public List<ObjetoSimulacao> getObjetosEm(int x, int y) {
         List<ObjetoSimulacao> objetos = new ArrayList<>();
         for (Camada c : Camada.TODAS) {
-            ObjetoSimulacao o = getObjeto(c, l);
+            ObjetoSimulacao o = getObjeto(c, x, y);
             if (o != null) {
                 objetos.add(o);
             }
