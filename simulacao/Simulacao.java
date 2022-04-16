@@ -90,7 +90,7 @@ public class Simulacao {
             int tempo = (int) ((System.nanoTime() - inicio) / 1000000);
             System.out.printf("T: %d  \r", tempo);
             int t = 100 - tempo;
-            esperar(1000);
+            esperar(t);
         }
     }
 
