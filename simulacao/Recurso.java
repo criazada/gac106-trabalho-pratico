@@ -14,6 +14,7 @@ public enum Recurso {
     SETA_LESTE("seta-leste.png"),
     SETA_OESTE("seta-oeste.png"),
     CALCADA("ladrilho.png"),
+    ONIBUS( "mamute.png"),
     PEDESTRE("pedestre-2.png"),
     FAIXA("faixa-horizontal.png");
 

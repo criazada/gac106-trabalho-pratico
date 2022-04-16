@@ -94,20 +94,20 @@ public class JanelaSimulacao extends JFrame {
             g.setColor(Color.white);
             g.fillRect(0, 0, tamanho.width, tamanho.height);
             g.setColor(Color.gray);
-            for (int i = 0, x = 0; x < tamanho.width; i++, x = i * xScale) {
-                g.drawLine(x, 0, x, tamanho.height - 1);
-            }
-            for (int i = 0, y = 0; y < tamanho.height; i++, y = i * yScale) {
-                g.drawLine(0, y, tamanho.width - 1, y);
-            }
+            // for (int i = 0, x = 0; x < tamanho.width; i++, x = i * xScale) {
+            //     g.drawLine(x, 0, x, tamanho.height - 1);
+            // }
+            // for (int i = 0, y = 0; y < tamanho.height; i++, y = i * yScale) {
+            //     g.drawLine(0, y, tamanho.width - 1, y);
+            // }
         }
 
         /**
          * Desenha a imagem para um determinado item.
          */
         public void desenharImagem(int x, int y, Image image) {
-            g.drawImage(image, x * xScale + 1, y * yScale + 1,
-                    xScale - 1, yScale - 1, this);
+            g.drawImage(image, x * xScale, y * yScale,
+                    xScale, yScale, this);
         }
 
         /**

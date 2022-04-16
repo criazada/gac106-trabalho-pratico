@@ -1,5 +1,6 @@
 package simulacao;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -38,15 +39,22 @@ public class Simulacao {
             }
         }
         mapa.atualizarGrafos();
-
+        
+        List<Integer> posPontosOnibus = new ArrayList<Integer>();
+        for (int i = 0; i < 10; i++) {
+            System.out.println();
+            Localizacao loc = getRuaAleatoria(rand);
+            System.out.println(loc.getX() + " " + loc.getY());
+        }
+        Onibus.posPontosOnibus = posPontosOnibus;
+        
         long inicio = System.nanoTime();
         for (int i = 0; i < 200; i++) {
             Localizacao s = getRuaAleatoria(rand);
             Localizacao d = getRuaAleatoria(rand);
             Localizacao s1 = getCalcadaAleatoria(rand);
             Localizacao d1 = getCalcadaAleatoria(rand);
-
-            Veiculo v = new Veiculo(s, d, mapa, rand);
+            Veiculo v = new Carro(s, d, mapa, rand);
             PedestreAmbulante p = new PedestreAmbulante(s1, d1, mapa, rand);
             mapa.adicionarObjeto(v);
             mapa.adicionarObjeto(p);
@@ -54,7 +62,6 @@ public class Simulacao {
         }
         int tempo = (int) ((System.nanoTime() - inicio) / 1000000);
         System.out.printf("T: %d%n", tempo);
-
         // Inicializando o mapa com o veículo
         janelaSimulacao = new JanelaSimulacao(mapa);
     }

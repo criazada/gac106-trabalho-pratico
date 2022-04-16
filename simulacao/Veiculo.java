@@ -1,7 +1,7 @@
 package simulacao;
 
 import java.util.Random;
-
+import java.awt.Image;
 /**
  * Representa os veiculos da simulacao.
  *
@@ -10,14 +10,9 @@ import java.util.Random;
 public class Veiculo extends ObjetoAmbulante {
     private int raiva;
 
-    public Veiculo(Localizacao localizacao, Localizacao destino, Mapa mapa, Random rng) {
-        super(Recurso.CARRO.getImagem(), localizacao, mapa, rng, 0);
+    public Veiculo(Image imagem,Localizacao localizacao, Localizacao destino, Mapa mapa, Random rng) {
+        super(imagem, localizacao, mapa, rng, 0);
         setLocalizacaoDestino(destino);
-    }
-
-    @Override
-    public void setLocalizacaoDestino(Localizacao localizacaoDestino) {
-        super.setLocalizacaoDestino(localizacaoDestino);
     }
 
     @Override
