@@ -13,15 +13,15 @@ import javax.imageio.ImageIO;
 import simulacao.Direcao;
 
 public class Gerador {
-    private static final int MAX_SEGMENTOS = 200;
+    private static final int MAX_SEGMENTOS = 100;
 
     private double[][] densidade;
     private Random rng;
     private int largura, altura;
 
     public Gerador(int largura, int altura, Random rng) {
-        this.largura = largura;
-        this.altura = altura;
+        this.largura = largura / 4;
+        this.altura = altura / 4;
         this.rng = rng;
         this.densidade = new double[altura][largura];
 
@@ -129,12 +129,46 @@ public class Gerador {
             }
         }
 
+        posprocessar(S);
+
         imprimir(S);
 
         return S;
     }
 
+    public void posprocessar(List<Segmento> S) {
+        boolean melhoravel = true;
+        while (melhoravel) {
+            melhoravel = false;
+            for (Segmento r : S) {
+                if (r.getMelhor()) continue;
+                Segmento t = r.getFinal();
+                int x = t.getX();
+                int y = t.getY();
+                if (x >= largura || y >= altura || y <= 0 || x <= 0) {
+                    r.setMelhor(true);
+                    continue;
+                }
+                boolean intersecta = false;
+                for (Segmento s : S) {
+                    if (t.intersecta(s)) {
+                        intersecta = true;
+                        break;
+                    }
+                }
+                if (!intersecta) {
+                    r.setComprimento(r.getComprimento() + 1);
+                    melhoravel = true;
+                } else {
+                    r.setMelhor(true);
+                }
+            }
+        }
+    }
+
     public void imprimir(List<Segmento> S) {
+        int largura = this.largura * 4;
+        int altura = this.altura * 4;
         BufferedImage im = new BufferedImage(largura, altura, BufferedImage.TYPE_3BYTE_BGR);
         for (int x = 0; x < largura; x++) {
             for (int y = 0; y < altura; y++) {
@@ -144,9 +178,13 @@ public class Gerador {
         for (Segmento s : S) {
             int[] clip = s.getClip();
             // printClip(clip);
-            for (int x = clip[0]; x <= clip[2] && x < largura; x++) {
-                for (int y = clip[3]; y <= clip[1] && y < altura; y++) {
-                    im.setRGB(x, y, (s.getX() == x && s.getY() == y) ? 0xFFFF00 : (s.segueReto ? 0xFF00FF : 0x00FFFF));
+            Direcao d = s.getDirecao();
+            int ex = Math.abs(d.componenteY()) + Math.abs(d.componenteX());
+            for (int x = clip[0] * 4; x <= clip[2] * 4 + ex && x < largura; x++) {
+                for (int y = clip[3] * 4; y <= clip[1] * 4 + ex && y < altura; y++) {
+                    // int cor = (s.getX() == x / 4 && s.getY() == y / 2) ? 0xFFFF00 : (s.segueReto ? 0xFF00FF : 0x00FFFF);
+                    int cor = 0;
+                    im.setRGB(x, y, cor);
                 }
             }
         }
@@ -172,6 +210,10 @@ public class Gerador {
             ok = true;
             int[] clip = e.r.getClip();
             boolean longoDemais = false;
+            if (e.r.getComprimento() <= 1) {
+                ok = false;
+                break;
+            }
             for (int j = 0; j < 4; j += 2) {
                 if (longoDemais) continue;
                 if (clip[j] < 0 || clip[j] > largura) longoDemais = true;
@@ -216,7 +258,7 @@ public class Gerador {
 
     private List<EntradaSegmento> globalGoals(EntradaSegmento e) {
         List<EntradaSegmento> ES = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 3; i++) {
             Segmento s = gerarCandidato(e);
             ES.add(new EntradaSegmento(i, s));
         }
@@ -232,7 +274,7 @@ public class Gerador {
         if (segueReto) {
             t = e.r.getTipo();
             d = e.r.getDirecao();
-            l = escalar(e.r.getComprimento(), 2);
+            l = selecionar(0, e.r.getComprimento() + 5);
             delta = e.r.getComprimento();
             x = e.r.getX() + d.componenteX() * delta;
             y = e.r.getY() + d.componenteY() * delta;
@@ -243,22 +285,14 @@ public class Gerador {
                 d = Direcao.TODAS[rng.nextInt(4)];
             }
             l = ((int) Math.floor(rng.nextDouble() * (largura / 7))) + 7;
-            delta = selecionar(0, e.r.getComprimento() / 2);
-            x = e.r.getX() + ed.componenteX() * delta + (d == Direcao.OESTE ? 1 : 0);
-            y = e.r.getY() + ed.componenteY() * delta + (d == Direcao.NORTE ? 1 : 0);
+            l = selecionar(5, 10);
+            delta = selecionar(0, e.r.getComprimento());
+            x = e.r.getX() + ed.componenteX() * delta;
+            y = e.r.getY() + ed.componenteY() * delta;
             t = Segmento.RUA;
         }
 
         return new Segmento(x, y, d, l, t, segueReto);
-    }
-
-    private int escalar(int x, double variacao) {
-        double v = x * rng.nextDouble() * variacao;
-        if (variacao < 0) {
-            return (int) Math.floor(v);
-        } else {
-            return (int) Math.ceil(v);
-        }
     }
 
     private int selecionar(int x, int y) {
