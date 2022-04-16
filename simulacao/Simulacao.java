@@ -26,10 +26,11 @@ public class Simulacao {
 
         List<Segmento> S = g.gerar();
         Direcao[][][] ruas = g.gerarRuas(S);
+        boolean[][] faixas = g.gerarFaixas(S);
         for (int i = 0; i < altura; i++) {
             for (int j = 0; j < largura; j++) {
                 if (ruas[i][j][0] != null) {
-                    Rua rua = new Rua(ruas[i][j], new Localizacao(j, i), mapa);
+                    Rua rua = new Rua(ruas[i][j], faixas[i][j], new Localizacao(j, i), mapa);
                     mapa.adicionarObjeto(rua);
                 } else {
                     Calcada c = new Calcada(new Localizacao(j, i), mapa);
@@ -45,13 +46,18 @@ public class Simulacao {
             Localizacao loc = getRuaAleatoria(rand);
             System.out.println(loc.getX() + " " + loc.getY());
         }
-
+        Onibus.posPontosOnibus = posPontosOnibus;
+        
         long inicio = System.nanoTime();
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 200; i++) {
             Localizacao s = getRuaAleatoria(rand);
             Localizacao d = getRuaAleatoria(rand);
+            Localizacao s1 = getCalcadaAleatoria(rand);
+            Localizacao d1 = getCalcadaAleatoria(rand);
             Veiculo v = new Carro(s, d, mapa, rand);
+            PedestreAmbulante p = new PedestreAmbulante(s1, d1, mapa, rand);
             mapa.adicionarObjeto(v);
+            mapa.adicionarObjeto(p);
             ((Rua) mapa.getObjeto(Camada.BACKGROUND, d)).marcar(true);;
         }
         int tempo = (int) ((System.nanoTime() - inicio) / 1000000);
@@ -70,6 +76,16 @@ public class Simulacao {
         return new Localizacao(x, y);
     }
 
+    private Localizacao getCalcadaAleatoria(Random r) {
+        int x = r.nextInt(mapa.getLargura());
+        int y = r.nextInt(mapa.getAltura());
+        while (!(mapa.getObjeto(Mapa.Camada.BACKGROUND, x, y) instanceof Calcada)) {
+            x = r.nextInt(mapa.getLargura());
+            y = r.nextInt(mapa.getAltura());
+        } 
+        return new Localizacao(x, y);
+    }
+
     /**
      * Executa n iterações da simulação
      * @param n número de iterações
@@ -81,7 +97,7 @@ public class Simulacao {
             iteracao();
             int tempo = (int) ((System.nanoTime() - inicio) / 1000000);
             System.out.printf("T: %d  \r", tempo);
-            int t = 100 - tempo;
+            int t = 500 - tempo;
             esperar(t);
         }
     }

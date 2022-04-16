@@ -291,6 +291,33 @@ public class Gerador {
         return ruas;
     }
 
+    public boolean[][] gerarFaixas(List<Segmento> S) {
+        int altura = this.altura * 4;
+        int largura = this.largura * 4;
+        boolean[][] faixas = new boolean[altura][largura];
+
+        for (Segmento s : S) {
+            int x = s.getX();
+            int y = s.getY();
+            int l = s.getComprimento();
+            if (l <= 3) continue;
+
+            Direcao d = s.getDirecao();
+            x += d.componenteX() * (l - 1);
+            y += d.componenteY() * (l - 1);
+            x *= 4;
+            y *= 4;
+
+            for (int dx = 0; dx <= Math.abs(d.componenteY()); dx++) {
+                for (int dy = 0; dy <= Math.abs(d.componenteX()); dy++) {
+                    faixas[y + dy - d.componenteY() * 2][x + dx - d.componenteX() * 2] = true;
+                }
+            }
+        }
+
+        return faixas;
+    }
+
     // Realiza a verificação da possibilidade de um segmento ser colocado, e o
     // ajusta em um limite de passos para que talvez possa ser válido
     private boolean localConstraints(List<Segmento> S, List<Juncao> J, EntradaSegmento e) {

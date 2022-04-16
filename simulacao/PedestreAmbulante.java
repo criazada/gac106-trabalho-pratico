@@ -1,49 +1,47 @@
 package simulacao;
 
 import java.util.Random;
-import java.awt.Image;
+
 /**
- * Representa os veiculos da simulacao.
+ * Representa os pedestres da simulacao.
  *
  * @author David J. Barnes and Michael Kolling and Luiz Merschmann
  */
-public class Veiculo extends ObjetoAmbulante {
+public class PedestreAmbulante extends ObjetoAmbulante {
+    private int lentidao;
     private int raiva;
 
-    public Veiculo(Image imagem,Localizacao localizacao, Localizacao destino, Mapa mapa, Random rng) {
-        super(imagem, localizacao, mapa, rng, 0);
+    public PedestreAmbulante(Localizacao localizacao, Localizacao destino, Mapa mapa, Random rng) {
+        super(Recurso.PEDESTRE.getImagem(), localizacao, mapa, rng, 1);
         setLocalizacaoDestino(destino);
     }
 
     @Override
     public void executarAcao() {
+        lentidao++;
+        if (lentidao % 2 == 0) return;
+
         Localizacao destino = getLocalizacaoDestino();
         if (destino != null) {
             Localizacao prox = proximaLocalizacao();
             if (prox == getLocalizacao()) {
                 getMapa().removerObjeto(this);
             }
-            // carro só anda se o espaço de destino está livre
+            // pedestre só anda se o espaço de destino está livre
             else if (livre(prox)) {
                 setLocalizacao(prox);
                 incrementarPasso();
+                raiva = 0;
             } else {
                 raiva++;
             }
-            
+
             if (raiva >= 5) {
                 Direcao d = Direcao.TODAS[getRng().nextInt(4)];
                 prox = d.seguindo(getLocalizacao());
-                boolean andar = true;
-                for (ObjetoSimulacao o : getMapa().getObjetosEm(prox)) {
-                    if (o != null && !(o instanceof Rua)) {
-                        andar = false;
-                    }
-                }
-                if (andar) {
+                if (livre(prox)) {
                     setLocalizacao(prox);
                     atualizarRota();
-                    raiva = 0;
                 }
             }
         }

@@ -13,8 +13,6 @@ public class Onibus extends Veiculo {
 
     public Onibus(Localizacao localizacao, Localizacao destino, Mapa mapa, Random rng) {
         super(Recurso.ONIBUS.getImagem(), localizacao, destino, mapa, rng);
-        if () {
-            
-        }
     }
+    
 }
