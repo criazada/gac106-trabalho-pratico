@@ -94,7 +94,7 @@ public class Simulacao {
 
     private void esperar(int milisegundos) {
         try {
-            Thread.sleep(milisegundos);
+            Thread.sleep(milisegundos < 0 ? 0 : milisegundos);
         } catch (InterruptedException e) {
             System.out.println(e.getMessage());
         }
