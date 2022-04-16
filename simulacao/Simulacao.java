@@ -40,14 +40,19 @@ public class Simulacao {
         }
         mapa.atualizarGrafos();
         
-        List<Integer> posPontosOnibus = new ArrayList<Integer>();
+        // gera pontos de onibus
         for (int i = 0; i < 10; i++) {
-            System.out.println();
             Localizacao loc = getRuaAleatoria(rand);
-            System.out.println(loc.getX() + " " + loc.getY());
+            Onibus.posPontosOnibus.add(loc);
+            mapa.adicionarObjeto(new PontoOnibus(loc, mapa, rand));
         }
-        Onibus.posPontosOnibus = posPontosOnibus;
-        
+
+        for (int i = 0; i < 10; i++) {
+            Veiculo v = new Onibus(i, (i+1) % Onibus.posPontosOnibus.size(),  mapa, rand);
+            mapa.adicionarObjeto(v);
+        }
+
+
         long inicio = System.nanoTime();
         for (int i = 0; i < 200; i++) {
             Localizacao s = getRuaAleatoria(rand);

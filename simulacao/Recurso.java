@@ -16,6 +16,7 @@ public enum Recurso {
     CALCADA("ladrilho.png"),
     ONIBUS( "mamute.png"),
     PEDESTRE("pedestre-2.png"),
+    PONTO_ONIBUS("ponto-onibus.png"),
     FAIXA("faixa-horizontal.png");
 
     private Image imagem;

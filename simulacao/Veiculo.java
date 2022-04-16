@@ -21,7 +21,7 @@ public class Veiculo extends ObjetoAmbulante {
         if (destino != null) {
             Localizacao prox = proximaLocalizacao();
             if (prox == getLocalizacao()) {
-                getMapa().removerObjeto(this);
+                fimDeRota();
             }
             // carro só anda se o espaço de destino está livre
             else if (livre(prox)) {
@@ -47,5 +47,8 @@ public class Veiculo extends ObjetoAmbulante {
                 }
             }
         }
+    }
+    public void fimDeRota(){
+        getMapa().removerObjeto(this);
     }
 }
