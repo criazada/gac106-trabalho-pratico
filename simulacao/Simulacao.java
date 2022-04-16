@@ -46,14 +46,6 @@ public class Simulacao {
             System.out.println(loc.getX() + " " + loc.getY());
         }
 
-        for (int i = 0; i < 100; i++) {
-            Localizacao s = getRuaAleatoria(rand);
-            Localizacao d = getRuaAleatoria(rand);
-            Veiculo v = new Onibus(s, d, mapa, rand);
-            mapa.adicionarObjeto(v);
-            ((Rua) mapa.getObjeto(Camada.BACKGROUND, d)).marcar(true);;
-        }
-
         long inicio = System.nanoTime();
         for (int i = 0; i < 100; i++) {
             Localizacao s = getRuaAleatoria(rand);
