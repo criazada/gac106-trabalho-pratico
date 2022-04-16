@@ -7,6 +7,6 @@ run: build
 	java simulacao.Principal
 build: $(MAINS)
 $(MAINS): $(JAVA_FILES) clean
-	javac $(@:%.class=%.java)
+	javac $(JAVA_FILES:%.class=%.java)
 clean:
 	rm -f simulacao/**/*.class 
