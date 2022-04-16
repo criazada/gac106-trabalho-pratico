@@ -40,7 +40,7 @@ public class Simulacao {
         mapa.atualizarGrafos();
 
         long inicio = System.nanoTime();
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 200; i++) {
             Localizacao s = getRuaAleatoria(rand);
             Localizacao d = getRuaAleatoria(rand);
             Localizacao s1 = getCalcadaAleatoria(rand);
@@ -90,7 +90,7 @@ public class Simulacao {
             iteracao();
             int tempo = (int) ((System.nanoTime() - inicio) / 1000000);
             System.out.printf("T: %d  \r", tempo);
-            int t = 100 - tempo;
+            int t = 500 - tempo;
             esperar(t);
         }
     }
