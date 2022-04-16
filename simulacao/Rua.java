@@ -47,16 +47,6 @@ public class Rua extends ObjetoSimulacao {
         return r.getImagem();
     }
 
-    public void marcar(boolean m) {
-        Image[] imagens = getImagens();
-        int p = imagens.length - 1;
-        if (m) {
-            imagens[p] = Recurso.SEMAFORO_VERDE.getImagem();
-        } else {
-            imagens[p] = null;
-        }
-    }
-
     public Rua(Direcao direcao, Localizacao localizacao, Mapa mapa) {
         this(new Direcao[]{direcao}, localizacao, mapa);
     }

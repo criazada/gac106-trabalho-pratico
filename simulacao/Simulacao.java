@@ -54,7 +54,7 @@ public class Simulacao {
 
 
         long inicio = System.nanoTime();
-        for (int i = 0; i < 200; i++) {
+        for (int i = 0; i < 150; i++) {
             Localizacao s = getRuaAleatoria(rand);
             Localizacao d = getRuaAleatoria(rand);
             Localizacao s1 = getCalcadaAleatoria(rand);
@@ -63,7 +63,6 @@ public class Simulacao {
             PedestreAmbulante p = new PedestreAmbulante(s1, d1, mapa, rand);
             mapa.adicionarObjeto(v);
             mapa.adicionarObjeto(p);
-            ((Rua) mapa.getObjeto(Camada.BACKGROUND, d)).marcar(true);;
         }
         int tempo = (int) ((System.nanoTime() - inicio) / 1000000);
         System.out.printf("T: %d%n", tempo);
