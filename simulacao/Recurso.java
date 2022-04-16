@@ -13,7 +13,8 @@ public enum Recurso {
     SETA_SUL("seta-sul.png"),
     SETA_LESTE("seta-leste.png"),
     SETA_OESTE("seta-oeste.png"),
-    CALCADA("ladrilho.png");
+    CALCADA("ladrilho.png"),
+    ONIBUS( "mamute.png");
 
     private Image imagem;
     private static final String base = "imagens";

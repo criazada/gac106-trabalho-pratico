@@ -2,18 +2,18 @@ package simulacao;
 
 import java.util.List;
 import java.util.Random;
-
+import java.awt.Image;
 /**
  * Representa os veiculos da simulacao.
  *
  * @author David J. Barnes and Michael Kolling and Luiz Merschmann
  */
-public class Veiculo extends ObjetoAmbulante {
+public abstract class Veiculo extends ObjetoAmbulante {
     private List<Localizacao> caminho;
     private int passo;
 
-    public Veiculo(Localizacao localizacao, Localizacao destino, Mapa mapa, Random rng) {
-        super(Recurso.CARRO.getImagem(), localizacao, mapa, rng);
+    public Veiculo(Image imagem ,Localizacao localizacao, Localizacao destino, Mapa mapa, Random rng) {
+        super(imagem, localizacao, mapa, rng);
         setLocalizacaoDestino(destino);
     }
 
