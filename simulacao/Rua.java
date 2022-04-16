@@ -7,8 +7,7 @@ public class Rua extends ObjetoSimulacao {
     
     public Rua(Direcao[] direcoes, Localizacao localizacao, Mapa mapa) {
         super((Image) null, localizacao, mapa, Mapa.Camada.BACKGROUND, null);
-        Recurso r = null;
-        Image[] imagens = new Image[direcoes.length + 1];
+        Image[] imagens = new Image[direcoes.length + 2];
         imagens[0] = Recurso.FUNDO_RUA.getImagem();
         for (int i = 0; i < direcoes.length; i++) {
             imagens[i+1] = getSetaParaDirecao(direcoes[i]);
@@ -41,13 +40,23 @@ public class Rua extends ObjetoSimulacao {
         return r.getImagem();
     }
 
+    public void marcar(boolean m) {
+        Image[] imagens = getImagens();
+        int p = imagens.length - 1;
+        if (m) {
+            imagens[p] = Recurso.SEMAFORO_VERDE.getImagem();
+        } else {
+            imagens[p] = null;
+        }
+    }
+
     public Rua(Direcao direcao, Localizacao localizacao, Mapa mapa) {
         this(new Direcao[]{direcao}, localizacao, mapa);
     }
 
     @Override
     public boolean transparentePara(ObjetoSimulacao o) {
-        if (o instanceof Fantasma) return false;
+        if (o instanceof FantasmaPedestre) return false;
         Direcao desejada = Direcao.calcular(o.getLocalizacao(), getLocalizacao());
         for (Direcao d : direcoes) {
             if (d == desejada) return true;

@@ -1,6 +1,5 @@
 package simulacao.grafo;
 
-import java.util.List;
 import java.util.PriorityQueue;
 
 public class Grafo {
@@ -28,19 +27,22 @@ public class Grafo {
         boolean[] visitado = new boolean[n];
         int[] dist = new int[n];
         int[] prev = new int[n];
-        for (int v = 0; v < n; v++) {
-            dist[v] = INF;
-            prev[v] = -1;
-        }
-        dist[s] = 0;
-
         PriorityQueue<EntradaVertice> Q = new PriorityQueue<>();
-        Q.add(new EntradaVertice(dist[s], s));
+
+        dist[s] = 0;
+        for (int v = 0; v < n; v++) {
+            if (v != s) {
+                dist[v] = INF;
+            }
+            prev[v] = -1;
+            Q.add(new EntradaVertice(dist[v], v));
+        }
 
         while (!Q.isEmpty()) {
             EntradaVertice e = Q.remove();
             int u = e.v;
             int d = e.dist;
+
             if (visitado[u]) continue;
             visitado[u] = true;
 

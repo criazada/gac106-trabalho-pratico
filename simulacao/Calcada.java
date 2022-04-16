@@ -12,7 +12,6 @@ public class Calcada extends ObjetoSimulacao {
 
     @Override
     public boolean transparentePara(ObjetoSimulacao o) {
-        return !(o instanceof Veiculo);
+        return !(o instanceof Veiculo) && !(o instanceof FantasmaVeiculo);
     }
-    
 }

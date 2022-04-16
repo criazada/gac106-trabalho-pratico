@@ -24,10 +24,12 @@ public class Simulacao {
 
         List<Segmento> S = g.gerar();
         Direcao[][][] ruas = g.gerarRuas(S);
+        Localizacao lRua = null;
         for (int i = 0; i < altura; i++) {
             for (int j = 0; j < largura; j++) {
                 if (ruas[i][j][0] != null) {
                     Rua rua = new Rua(ruas[i][j], new Localizacao(j, i), mapa);
+                    if (lRua == null) lRua = rua.getLocalizacao();
                     mapa.adicionarObjeto(rua);
                 } else {
                     Calcada c = new Calcada(new Localizacao(j, i), mapa);
@@ -35,19 +37,20 @@ public class Simulacao {
                 }
             }
         }
-
-        // For para ver como fica com mais veiculos (debug)
-        for (int i = 0; i < 5; i++) {
-            // Cria um veiculo em uma posicao aleatoria
-            Veiculo veiculo = new Veiculo(new Localizacao(rand.nextInt(largura), rand.nextInt(altura)), mapa, rand);
-            // Define a posicao destino aleatoriamente
-            veiculo.setLocalizacaoDestino(new Localizacao(rand.nextInt(largura), rand.nextInt(altura)));
-            mapa.adicionarObjeto(veiculo);
-        }
-        Veiculo veiculo = new Veiculo(new Localizacao(0, 0), mapa, rand);
-        veiculo.setLocalizacaoDestino(new Localizacao(35, 35));
-        mapa.adicionarObjeto(veiculo);
         mapa.atualizarGrafos();
+
+        Veiculo v = new Veiculo(lRua, mapa, rand);
+        int x = 0;
+        int y = 0;
+        while (!(mapa.getObjeto(Mapa.Camada.BACKGROUND, x, y) instanceof Rua)) {
+            x = rand.nextInt(largura);
+            y = rand.nextInt(altura);
+        }
+        ((Rua) mapa.getObjeto(Mapa.Camada.BACKGROUND, x, y)).marcar(true);
+
+        mapa.adicionarObjeto(v);
+        v.setLocalizacaoDestino(new Localizacao(x, y));
+
         // Inicializando o mapa com o veículo
         janelaSimulacao = new JanelaSimulacao(mapa);
     }

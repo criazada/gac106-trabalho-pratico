@@ -98,23 +98,31 @@ public class Mapa {
         return y * largura + x;
     }
 
+    private int verticeParaX(int v) {
+        return v % largura;
+    }
+
+    private int verticeParaY(int v) {
+        return v / largura;
+    }
+
     public void atualizarGrafos() {
-        atualizarGrafo(GPedestre, new Fantasma());
+        atualizarGrafo(GPedestre, new FantasmaPedestre());
         atualizarGrafo(GVeiculo, new FantasmaVeiculo());
     }
 
     private void dfs(Grafo G, Fantasma f, boolean[][] visitado, int x, int y) {
         if (visitado[y][x]) return;
         visitado[y][x] = true;
-
         
         int[][] p = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
         int u = indiceVertice(x, y);
+        Localizacao l = new Localizacao(x, y);
         for (int[] prox : p) {
-            f.setLocalizacao(new Localizacao(x, y));
+            f.setLocalizacao(l);
             int x1 = prox[0] + x;
             int y1 = prox[1] + y;
-            
+
             if (x1 < 0 || x1 >= largura || y1 < 0 || y1 >= altura) continue;
 
             boolean passavel = true;
@@ -131,6 +139,25 @@ public class Mapa {
                 dfs(G, f, visitado, x1, y1);
             }
         }
+    }
+
+    public List<Localizacao> getCaminhoParaDestino(Veiculo o) {
+        Localizacao l = o.getLocalizacao();
+        int s = indiceVertice(l.getX(), l.getY());
+        int[] prev = GVeiculo.dijkstra(s);
+        List<Localizacao> passos = new ArrayList<>();
+
+        Localizacao d = o.getLocalizacaoDestino();
+        int v = indiceVertice(d.getX(), d.getY());
+        while (v != -1 && v != s) {
+            int x = verticeParaX(v);
+            int y = verticeParaY(v);
+            passos.add(new Localizacao(x, y));
+            v = prev[v];
+        }
+
+        Collections.reverse(passos);
+        return Collections.unmodifiableList(passos);
     }
 
     /**

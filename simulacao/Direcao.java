@@ -1,18 +1,18 @@
 package simulacao;
 
 public enum Direcao {
-    NORTE(0, -1, '^'),
-    SUL(0, 1, 'v'),
-    LESTE(1, 0, '<'),
-    OESTE(-1, 0, '>');
+    NORTE(0, -1, "^"),
+    SUL(0, 1, "v"),
+    LESTE(1, 0, "<"),
+    OESTE(-1, 0, ">");
 
     public static final Direcao[] TODAS = { NORTE, SUL, LESTE, OESTE };
 
     private int x;
     private int y;
-    private char c;
+    private String c;
 
-    private Direcao(int x, int y, char c) {
+    private Direcao(int x, int y, String c) {
         this.x = x;
         this.y = y;
         this.c = c;
@@ -26,7 +26,7 @@ public enum Direcao {
         return new Localizacao(l.getX() - x, l.getY() - y);
     }
 
-    public char caractere() {
+    public String caractere() {
         return c;
     }
 
@@ -69,5 +69,10 @@ public enum Direcao {
         } else {
             return NORTE;
         }
+    }
+
+    @Override
+    public String toString() {
+        return c;
     }
 }
