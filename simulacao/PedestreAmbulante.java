@@ -1,6 +1,7 @@
 package simulacao;
 
 import java.util.Random;
+import java.awt.Image;
 
 /**
  * Representa os pedestres da simulacao.
@@ -12,8 +13,21 @@ public class PedestreAmbulante extends ObjetoAmbulante {
     private int raiva;
 
     public PedestreAmbulante(Localizacao localizacao, Localizacao destino, Mapa mapa, Random rng) {
-        super(Recurso.PEDESTRE.getImagem(), localizacao, mapa, rng, 1);
+        super(selecionarImagem(rng.nextInt(3)), localizacao, mapa, rng, 1);
         setLocalizacaoDestino(destino);
+    }
+
+    private static Image selecionarImagem(int rng) {
+        switch(rng) {
+            case 0:
+                return Recurso.PEDESTRE_1.getImagem();   
+            case 1:
+                return Recurso.PEDESTRE_2.getImagem();               
+            case 2:
+                return Recurso.PEDESTRE_3.getImagem();
+            default:
+                return Recurso.PEDESTRE_1.getImagem();  
+        }
     }
 
     @Override

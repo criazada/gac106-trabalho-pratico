@@ -4,7 +4,9 @@ import java.awt.Image;
 import javax.swing.ImageIcon;
 
 public enum Recurso {
-    CARRO("carro.png"),
+    CARRO_1("marquinhos2.png"),
+    CARRO_2("mate.png"),
+    CARRO_3("sally.png"),
     FUNDO_RUA("fundo-rua.png"),
     SEMAFORO_VERDE("semaforo-verde.png"),
     SEMAFORO_AMARELO("semaforo-amarelo.png"),
@@ -15,7 +17,9 @@ public enum Recurso {
     SETA_OESTE("seta-oeste.png"),
     CALCADA("ladrilho.png"),
     ONIBUS( "mamute.png"),
-    PEDESTRE("pedestre-2.png"),
+    PEDESTRE_1("pedestre1.png"),
+    PEDESTRE_2("pedestre2.png"),
+    PEDESTRE_3("pedestre3.png"),
     FAIXA("faixa-horizontal.png");
 
     private Image imagem;
