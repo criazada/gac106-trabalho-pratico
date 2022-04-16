@@ -25,12 +25,10 @@ public class Simulacao {
 
         List<Segmento> S = g.gerar();
         Direcao[][][] ruas = g.gerarRuas(S);
-        Localizacao lRua = null;
         for (int i = 0; i < altura; i++) {
             for (int j = 0; j < largura; j++) {
                 if (ruas[i][j][0] != null) {
                     Rua rua = new Rua(ruas[i][j], new Localizacao(j, i), mapa);
-                    if (lRua == null) lRua = rua.getLocalizacao();
                     mapa.adicionarObjeto(rua);
                 } else {
                     Calcada c = new Calcada(new Localizacao(j, i), mapa);
