@@ -25,10 +25,11 @@ public class Simulacao {
 
         List<Segmento> S = g.gerar();
         Direcao[][][] ruas = g.gerarRuas(S);
+        boolean[][] faixas = g.gerarFaixas(S);
         for (int i = 0; i < altura; i++) {
             for (int j = 0; j < largura; j++) {
                 if (ruas[i][j][0] != null) {
-                    Rua rua = new Rua(ruas[i][j], new Localizacao(j, i), mapa);
+                    Rua rua = new Rua(ruas[i][j], faixas[i][j], new Localizacao(j, i), mapa);
                     mapa.adicionarObjeto(rua);
                 } else {
                     Calcada c = new Calcada(new Localizacao(j, i), mapa);
@@ -44,7 +45,7 @@ public class Simulacao {
             Localizacao d = getRuaAleatoria(rand);
             Localizacao s1 = getCalcadaAleatoria(rand);
             Localizacao d1 = getCalcadaAleatoria(rand);
-            
+
             Veiculo v = new Veiculo(s, d, mapa, rand);
             PedestreAmbulante p = new PedestreAmbulante(s1, d1, mapa, rand);
             mapa.adicionarObjeto(v);

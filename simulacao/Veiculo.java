@@ -1,6 +1,5 @@
 package simulacao;
 
-import java.util.List;
 import java.util.Random;
 
 /**
@@ -9,31 +8,14 @@ import java.util.Random;
  * @author David J. Barnes and Michael Kolling and Luiz Merschmann
  */
 public class Veiculo extends ObjetoAmbulante {
-    private List<Localizacao> caminho;
-    private int passo;
-
     public Veiculo(Localizacao localizacao, Localizacao destino, Mapa mapa, Random rng) {
-        super(Recurso.CARRO.getImagem(), localizacao, mapa, rng);
+        super(Recurso.CARRO.getImagem(), localizacao, mapa, rng, 0);
         setLocalizacaoDestino(destino);
-    }
-
-    /**
-     * Gera a localizacao para se mover visando alcançar o destino
-     *
-     * @return Localizacao para onde se deve ir
-     */
-    public Localizacao proximaLocalizacao() {
-        if (passo < caminho.size()) {
-            return caminho.get(passo);
-        }
-        return getLocalizacao();
     }
 
     @Override
     public void setLocalizacaoDestino(Localizacao localizacaoDestino) {
         super.setLocalizacaoDestino(localizacaoDestino);
-        caminho = getMapa().getCaminhoParaDestino(this);
-        passo = 0;
     }
 
     @Override
@@ -47,7 +29,7 @@ public class Veiculo extends ObjetoAmbulante {
             // carro só anda se o espaço de destino está livre
             else if (livre(prox)) {
                 setLocalizacao(prox);
-                passo++;
+                incrementarPasso();
             }
         }
     }

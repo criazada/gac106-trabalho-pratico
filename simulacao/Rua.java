@@ -4,16 +4,23 @@ import java.awt.Image;
 
 public class Rua extends ObjetoSimulacao {
     private Direcao[] direcoes;
-    
-    public Rua(Direcao[] direcoes, Localizacao localizacao, Mapa mapa) {
+    private boolean faixa;
+
+    public Rua(Direcao[] direcoes, boolean faixa, Localizacao localizacao, Mapa mapa) {
         super((Image) null, localizacao, mapa, Mapa.Camada.BACKGROUND, null);
-        Image[] imagens = new Image[direcoes.length + 2];
+        Image[] imagens = new Image[direcoes.length + 3];
         imagens[0] = Recurso.FUNDO_RUA.getImagem();
+        imagens[1] = faixa ? Recurso.FAIXA.getImagem() : null;
         for (int i = 0; i < direcoes.length; i++) {
-            imagens[i+1] = getSetaParaDirecao(direcoes[i]);
+            imagens[i+2] = getSetaParaDirecao(direcoes[i]);
         }
         setImagens(imagens);
         this.direcoes = direcoes;
+        this.faixa = faixa;
+    }
+
+    public Rua(Direcao[] direcoes, Localizacao localizacao, Mapa mapa) {
+        this(direcoes, false, localizacao, mapa);
     }
 
     private Image getSetaParaDirecao(Direcao d) {
@@ -56,7 +63,7 @@ public class Rua extends ObjetoSimulacao {
 
     @Override
     public boolean transparentePara(ObjetoSimulacao o) {
-        if (o instanceof FantasmaPedestre) return false;
+        if (o instanceof FantasmaPedestre || o instanceof PedestreAmbulante) return faixa;
         Direcao desejada = Direcao.calcular(o.getLocalizacao(), getLocalizacao());
         for (Direcao d : direcoes) {
             if (d == desejada) return true;

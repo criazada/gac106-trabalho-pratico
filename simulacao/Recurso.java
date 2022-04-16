@@ -14,7 +14,7 @@ public enum Recurso {
     SETA_LESTE("seta-leste.png"),
     SETA_OESTE("seta-oeste.png"),
     CALCADA("ladrilho.png"),
-    PEDESTRE("pedestre.png"),
+    PEDESTRE("pedestre-2.png"),
     FAIXA("faixa-horizontal.png");
 
     private Image imagem;
