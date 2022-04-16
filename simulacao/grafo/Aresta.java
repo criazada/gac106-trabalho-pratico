@@ -8,4 +8,12 @@ public class Aresta {
         this.v = v;
         this.peso = peso;
     }
+
+    public int getV() {
+        return v;
+    }
+
+    public int getPeso() {
+        return peso;
+    }
 }

@@ -11,5 +11,4 @@ public class Fantasma extends ObjetoSimulacao {
 
     @Override
     public boolean transparentePara(ObjetoSimulacao o) { return true; }
-    
 }
