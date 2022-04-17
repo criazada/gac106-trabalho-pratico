@@ -52,6 +52,12 @@ public class Simulacao {
             mapa.adicionarObjeto(v);
         }
 
+        //gera obras
+        for(int i = 0; i < 10; i++){
+            Localizacao loc = getRuaAleatoria(rand);
+            mapa.adicionarObjeto(new Obra(loc, mapa, rand));
+        }
+
 
         long inicio = System.nanoTime();
         for (int i = 0; i < 150; i++) {
