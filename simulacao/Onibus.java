@@ -9,18 +9,18 @@ import java.util.List;
  * @author David J. Barnes and Michael Kolling and Luiz Merschmann
  */
 public class Onibus extends Veiculo {
-    public static List<Localizacao> posPontosOnibus = new ArrayList<Localizacao>();
+
     public int localizacaoAtual;
     public int esperar = 5;
 
     public Onibus(int localizacao, int destino, Mapa mapa, Random rng) {
-        super(Recurso.ONIBUS.getImagem(), Onibus.posPontosOnibus.get(localizacao), Onibus.posPontosOnibus.get(destino), mapa, rng);
+        super(Recurso.ONIBUS.getImagem(), PontoOnibus.posicoesRua.get(localizacao), PontoOnibus.posicoesRua.get(destino), mapa, rng);
         localizacaoAtual =  localizacao;
     }
 
     @Override
     public void fimDeRota(){
-        super.setLocalizacaoDestino(Onibus.posPontosOnibus.get((localizacaoAtual+1) % Onibus.posPontosOnibus.size()));
+        super.setLocalizacaoDestino(PontoOnibus.posicoesRua.get((localizacaoAtual+1) % PontoOnibus.posicoesRua.size()));
         localizacaoAtual++;
     }
     @Override
@@ -44,4 +44,6 @@ public class Onibus extends Veiculo {
         }
         return false;
     }
+
+    
 }

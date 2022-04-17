@@ -8,6 +8,7 @@ import java.awt.Image;
  *
  * @author David J. Barnes and Michael Kolling and Luiz Merschmann
  */
+
 public class PedestreAmbulante extends ObjetoAmbulante {
     private int lentidao;
     private int raiva;
