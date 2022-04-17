@@ -15,7 +15,9 @@ public abstract class ObjetoAmbulante extends ObjetoSimulacao {
         localizacaoDestino = null;
         this.tipo = tipo;
     }
-
+    public List<Localizacao> getcaminho () {
+        return caminho;
+    }
     public Localizacao getLocalizacaoDestino() {
         return localizacaoDestino;
     }

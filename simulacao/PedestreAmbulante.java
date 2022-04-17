@@ -37,10 +37,16 @@ public class PedestreAmbulante extends ObjetoAmbulante {
         if (lentidao % 2 == 0) return;
 
         Localizacao destino = getLocalizacaoDestino();
+
+        if (getcaminho().size() == 0) {
+            getMapa().removerObjeto(this);
+            return;
+        }
+
         if (destino != null) {
             Localizacao prox = proximaLocalizacao();
             if (prox == getLocalizacao()) {
-                getMapa().removerObjeto(this);
+                estaNoDestino();
             }
             // pedestre só anda se o espaço de destino está livre
             else if (livre(prox)) {
@@ -60,5 +66,8 @@ public class PedestreAmbulante extends ObjetoAmbulante {
                 }
             }
         }
+    }
+    public void estaNoDestino(){
+        getMapa().removerObjeto(this);
     }
 }

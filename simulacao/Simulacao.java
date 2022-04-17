@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import simulacao.Mapa.Camada;
 import simulacao.geracao.Gerador;
 import simulacao.geracao.Segmento;
 
@@ -41,16 +40,17 @@ public class Simulacao {
         mapa.atualizarGrafos();
         
         // gera pontos de onibus
-        for (int i = 0; i < 9; i++) {
+        for (int i = 0; i < 2; i++) {
             Localizacao loc = getRuaAleatoria(rand);
             PontoOnibus.posicoesRua.add(loc);
-            PontoOnibus.posicoesCalcada.add(getCalcadaMaisProxima(loc, rand));
-            mapa.adicionarObjeto(new PontoOnibus(getCalcadaMaisProxima(loc, rand), mapa, rand));
+            PontoOnibus.posicoesCalcada.add(getCalcadaMaisProxima(loc));
+            mapa.adicionarObjeto(new PontoOnibus(getCalcadaMaisProxima(loc), mapa, rand));
             mapa.adicionarObjeto(new PontoOnibus(loc, mapa, rand));
-            System.out.println(loc);
+            System.out.println("ponto onibus Rua " + loc);
+            System.out.println("ponto onibus Calada " + getCalcadaMaisProxima(loc));
         }
 
-        for (int i = 0; i < 9; i++) {
+        for (int i = 0; i < 2; i++) {
             Veiculo v = new Onibus(i, (i+1) % PontoOnibus.posicoesRua.size(),  mapa, rand);
             mapa.adicionarObjeto(v);
         }
@@ -101,7 +101,7 @@ public class Simulacao {
     /**
      * Retorna a calçada mais proxima
      */
-    private Localizacao getCalcadaMaisProxima(Localizacao rua, Random r) {
+    public  Localizacao getCalcadaMaisProxima(Localizacao rua) {
         List<Localizacao> posMaisProximas = new ArrayList<Localizacao>();
         posMaisProximas.add(new Localizacao(rua.getX(), rua.getY() +1));
         posMaisProximas.add(new Localizacao(rua.getX() -1, rua.getY() ));
@@ -119,6 +119,7 @@ public class Simulacao {
         return posMaisProximas.get(index);
     }
 
+
     /**
      * Executa n iterações da simulação
      * @param n número de iterações
@@ -130,7 +131,7 @@ public class Simulacao {
             iteracao();
             int tempo = (int) ((System.nanoTime() - inicio) / 1000000);
             System.out.printf("T: %d  \r", tempo);
-            int t = 500 - tempo;
+            int t = 100 - tempo;
             esperar(t);
         }
     }
