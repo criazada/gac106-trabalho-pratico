@@ -39,7 +39,7 @@ public class Simulacao {
         RotaOnibus rota = new RotaOnibus();
 
         // gera pontos de onibus
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < 4; i++) {
             Localizacao loc = getRuaAleatoria(rand);
             PontoOnibus po = new PontoOnibus(loc, mapa);
             System.out.println("ponto onibus Rua " + loc);
@@ -47,7 +47,7 @@ public class Simulacao {
         }
 
         for (int i = 0; i < 1; i++) {
-            new Onibus(getRuaAleatoria(rand), 10, rota, i, mapa);
+            new Onibus(getRuaAleatoria(rand), 10, rota, i, mapa, rand);
         }
 
         for (int i = 0; i < 200; i++) {

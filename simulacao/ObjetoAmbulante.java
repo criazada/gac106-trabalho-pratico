@@ -75,6 +75,7 @@ public abstract class ObjetoAmbulante extends ObjetoSimulacao {
     public void executarAcao() {
         Localizacao destino = getLocalizacaoDestino();
         if (destino == null) return;
+
         Localizacao prox = proximaLocalizacao();
 
         if (prox == getLocalizacao()) {

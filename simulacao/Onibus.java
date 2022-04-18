@@ -2,6 +2,7 @@ package simulacao;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import simulacao.PontoOnibus.PontoOnibusCalcada;
 
@@ -17,8 +18,8 @@ public class Onibus extends Veiculo {
     private int capacidade;
     private List<PedestreOnibus> passageiros;
 
-    public Onibus(Localizacao localizacao, int capacidade, RotaOnibus rota, int inicio, Mapa mapa) {
-        super(Recurso.ONIBUS.getImagem(), localizacao, null, mapa, null);
+    public Onibus(Localizacao localizacao, int capacidade, RotaOnibus rota, int inicio, Mapa mapa, Random rand) {
+        super(Recurso.ONIBUS.getImagem(), localizacao, null, mapa, rand);
         esperar = 5;
         this.rota = rota;
         irParaPonto(inicio);
