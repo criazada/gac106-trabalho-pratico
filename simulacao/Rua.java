@@ -7,7 +7,7 @@ public class Rua extends ObjetoSimulacao {
     private boolean faixa;
 
     public Rua(Direcao[] direcoes, boolean faixa, Localizacao localizacao, Mapa mapa) {
-        super((Image) null, localizacao, mapa, Mapa.Camada.BACKGROUND, null);
+        super((Image) null, localizacao, mapa, Mapa.Camada.BACKGROUND, Mapa.PontoDeInteresse.ESTATICO, null);
         Image[] imagens = new Image[direcoes.length + 3];
         imagens[0] = Recurso.FUNDO_RUA.getImagem();
         imagens[1] = faixa ? Recurso.FAIXA.getImagem() : null;

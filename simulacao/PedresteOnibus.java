@@ -2,40 +2,46 @@ package simulacao;
 
 import java.util.Random;
 
+import simulacao.PontoOnibus.PontoOnibusCalcada;
+
 public class PedresteOnibus extends PedestreAmbulante {
-    private Localizacao destino ;
     private enum Estado {
         AntesOnibus,
         Onibus,
         AposOnibus,
     } 
     Estado estado;
-    private int idBus;
+    private PontoOnibusCalcada pontoDestino;
+
     public PedresteOnibus(Localizacao localizacao, Localizacao destino, Mapa mapa, Random rng) {
-        super( localizacao, PontoOnibus.pontoMaisProximoCalcada(localizacao), mapa, rng);
-        this.destino = destino;
+        super(localizacao, null, mapa, rng);
         this.estado = Estado.AntesOnibus;
+        setPontoDeDestino(getPontoMaisProximo());
     }
+
+    private void setPontoDeDestino(PontoOnibusCalcada ponto) {
+        pontoDestino = ponto;
+        if (ponto != null) {
+            setLocalizacaoDestino(ponto.getLocalizacao());
+        }
+    }
+
+    private PontoOnibusCalcada getPontoMaisProximo() {
+        return (PontoOnibusCalcada) getMapa().getPontoDeInteresseMaisProximo(this, Mapa.PontoDeInteresse.PONTO_ONIBUS_CALCADA);
+    }
+
     @Override
-    public void estaNoDestino(){
-        System.out.println("entrou" );
+    public void fimDeRota() {
         if (estado == Estado.AntesOnibus) {
-            int id = PontoOnibus.onibusEstaNoPonto(PontoOnibus.pontoMaisProximoRua(getLocalizacao()));
-            System.out.println("id: " + id); 
-            if (PontoOnibus.pedestreEstaNoPonto(getLocalizacao()) && 
-             id != -1) {
-                getMapa().removerObjeto(this);
-                this.idBus = id;
-                estado = Estado.Onibus; 
-            }  
+            if (pontoDestino.temOnibus()) {
+                estado = Estado.Onibus;
+                if (getLocalizacao().equals(pontoDestino.getLocalizacao())) {
+                    getMapa().removerObjeto(this);
+                }
+            }
         }
         else if ( estado == Estado.Onibus) {
             //se esta no desitno e onibus ta no ponto 
-           System.out.println("pos id" + Onibus.posicoesOnibus.get(idBus)); 
-           System.out.println("pos a chegar" + PontoOnibus.pontoMaisProximoRua(destino)); 
-
         }
     }
-    
-
 }

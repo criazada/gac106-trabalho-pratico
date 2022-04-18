@@ -29,16 +29,16 @@ public class Localizacao {
     }
     
     /**
-     * Calcula a distancia entre duas localizações atravez da distancia linear
+     * Calcula a distancia de Manhattan entre duas localizações
      * @param outra Localização a ser calculada a distancia
      * @return A distancia entre as duas localizações
      */
-    public int distancia(Localizacao outra) {
-        int dx = outra.getX() - x;
-        int dy = outra.getY() - y;
-        return (int) Math.sqrt(dx * dx + dy * dy);
+    public int distanciaManhattan(Localizacao outra) {
+        int dx = Math.abs(outra.getX() - x);
+        int dy = Math.abs(outra.getY() - y);
+        return dx + dy;
     }
-    
+
     /**
      * Verificacao de igualdade de conteudo de objetos do tipo Localizacao.
      *

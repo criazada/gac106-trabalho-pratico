@@ -14,20 +14,28 @@ public abstract class ObjetoSimulacao {
     private Mapa mapa;
     // Camada do objeto no mapa
     private Mapa.Camada camada;
+    private Mapa.PontoDeInteresse pdi;
     // RNG
     private Random rng;
 
-    public ObjetoSimulacao(Image[] imagens, Localizacao localizacao, Mapa mapa, Mapa.Camada camada, Random rng) {
+    public ObjetoSimulacao(Image[] imagens, Localizacao localizacao, Mapa mapa, Mapa.Camada camada, Mapa.PontoDeInteresse tipo, Random rng) {
         this.imagens = imagens;
         this.locAtual = localizacao;
         this.locAnterior = localizacao;
         this.mapa = mapa;
         this.camada = camada;
         this.rng = rng;
+        this.pdi = tipo;
+        if (mapa != null) {
+            mapa.adicionarObjeto(this);
+            if (tipo != null) {
+                mapa.addPontoDeInteresse(tipo, this);
+            }
+        }
     }
 
-    public ObjetoSimulacao(Image imagem, Localizacao localizacao, Mapa mapa, Mapa.Camada camada, Random rng) {
-        this(new Image[]{imagem}, localizacao, mapa, camada, rng);
+    public ObjetoSimulacao(Image imagem, Localizacao localizacao, Mapa mapa, Mapa.Camada camada, Mapa.PontoDeInteresse tipo, Random rng) {
+        this(new Image[]{imagem}, localizacao, mapa, camada, tipo, rng);
     }
 
     public ObjetoSimulacao() {}
@@ -66,6 +74,10 @@ public abstract class ObjetoSimulacao {
 
     public Random getRng() {
         return rng;
+    }
+
+    public Mapa.PontoDeInteresse getTipoPontoDeInteresse() {
+        return pdi;
     }
 
     /**

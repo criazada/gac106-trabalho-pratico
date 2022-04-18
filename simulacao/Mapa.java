@@ -12,17 +12,28 @@ import simulacao.grafo.Grafo;
  */
 public class Mapa {
     public enum Camada {
-        FOREGROUND, MIDDLE, BACKGROUND;
-
-        public static final Camada[] TODAS = { BACKGROUND, MIDDLE, FOREGROUND };
+        BACKGROUND, MIDDLE, FOREGROUND;
     }
 
-    private ObjetoSimulacao[][] foreground;
-    private ObjetoSimulacao[][] middle;
-    private ObjetoSimulacao[][] background;
+    public enum PontoDeInteresse {
+        PONTO_ONIBUS, PONTO_ONIBUS_CALCADA, ESTATICO, EXECUTAVEL;
+    }
 
-    public Grafo GPedestre;
-    public Grafo GVeiculo;
+    public enum TipoGrafo {
+        PEDESTRE(new FantasmaPedestre()), VEICULO(new FantasmaVeiculo());
+
+        private Fantasma f;
+        private TipoGrafo(Fantasma f) {
+            this.f = f;
+        }
+    }
+
+    public class ConjuntoObjetoSimulacao extends HashSet<ObjetoSimulacao> {}
+
+    private ObjetoSimulacao[][][] camadas;
+    private ConjuntoObjetoSimulacao[] pontosDeInteresse;
+
+    private Grafo[] grafos;
 
     private int largura;
     private int altura;
@@ -39,11 +50,19 @@ public class Mapa {
     public Mapa(int largura, int altura) {
         this.largura = largura;
         this.altura = altura;
-        foreground = new ObjetoSimulacao[altura][largura];
-        middle = new ObjetoSimulacao[altura][largura];
-        background = new ObjetoSimulacao[altura][largura];
-        GPedestre = new Grafo(largura * altura);
-        GVeiculo = new Grafo(largura * altura);
+        camadas = new ObjetoSimulacao[Camada.values().length][][];
+        for (int i = 0; i < camadas.length; i++) {
+            camadas[i] = new ObjetoSimulacao[altura][largura];
+        }
+        grafos = new Grafo[TipoGrafo.values().length];
+        for (int i = 0; i < grafos.length; i++) {
+            grafos[i] = new Grafo(altura * largura);
+        }
+
+        pontosDeInteresse = new ConjuntoObjetoSimulacao[PontoDeInteresse.values().length];
+        for (int i = 0; i < pontosDeInteresse.length; i++) {
+            pontosDeInteresse[i] = new ConjuntoObjetoSimulacao();
+        }
     }
 
     /**
@@ -67,6 +86,7 @@ public class Mapa {
      * @param o Objeto a ser removido
      */
     public void removerObjeto(ObjetoSimulacao o) {
+        getPontosDeInteresseMutavel(o.getTipoPontoDeInteresse()).remove(o);
         setObjeto(o.getCamada(), o.getLocalizacao(), null);
     }
 
@@ -78,7 +98,7 @@ public class Mapa {
         Camada c = o.getCamada();
         Localizacao anterior = o.getLocalizacaoAnterior();
         if (getObjeto(c, anterior) != o) {
-            System.out.printf("atualizarMapa: %s tentou atualizar posicao que nao e sua%n", o);
+            System.out.printf("atualizarMapa: %s tentou atualizar posicao que nao e sua: %s %s %s%n", o, anterior, o.getLocalizacao(), getObjeto(c, anterior));
         }
         setObjeto(c, anterior, null);
         setObjeto(c, o.getLocalizacao(), o);
@@ -98,23 +118,28 @@ public class Mapa {
         return y * largura + x;
     }
 
-    private int verticeParaX(int v) {
+    private int traduzir(Localizacao l) {
+        return indiceVertice(l.getX(), l.getY());
+    }
+
+    private int traduzirParaX(int v) {
         return v % largura;
     }
 
-    private int verticeParaY(int v) {
+    private int traduzirParaY(int v) {
         return v / largura;
     }
 
     public void atualizarGrafos() {
-        atualizarGrafo(GPedestre, new FantasmaPedestre());
-        atualizarGrafo(GVeiculo, new FantasmaVeiculo());
+        for (TipoGrafo tp : TipoGrafo.values()) {
+            atualizarGrafo(getGrafoMutavel(tp), tp.f);
+        }
     }
 
     private void dfs(Grafo G, Fantasma f, boolean[][] visitado, int x, int y) {
         if (visitado[y][x]) return;
         visitado[y][x] = true;
-        
+
         int[][] p = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
         int u = indiceVertice(x, y);
         Localizacao l = new Localizacao(x, y);
@@ -141,26 +166,26 @@ public class Mapa {
         }
     }
 
-    public List<Localizacao> getCaminhoParaDestino(Veiculo o){
-        return getCaminhoParaDestino(o, GVeiculo);
+    private Grafo getGrafoMutavel(TipoGrafo t) {
+        return grafos[t.ordinal()];
     }
 
-    public List<Localizacao> getCaminhoParaDestino(PedestreAmbulante p){
-        return getCaminhoParaDestino(p, GPedestre);
+    public Grafo.GrafoImutavel getGrafo(TipoGrafo t) {
+        return getGrafoMutavel(t).getGrafoImutavel();
     }
 
-    private List<Localizacao> getCaminhoParaDestino(ObjetoAmbulante o, Grafo G) {
+    public List<Localizacao> getCaminhoParaDestino(ObjetoAmbulante o) {
         Localizacao l = o.getLocalizacao();
-        int s = indiceVertice(l.getX(), l.getY());
+        int s = traduzir(l);
 
-        int[] prev = G.dijkstra(s).prev;
+        int[] prev = getGrafo(o.getTipoGrafo()).dijkstra(s).prev;
         List<Localizacao> passos = new ArrayList<>();
 
         Localizacao d = o.getLocalizacaoDestino();
-        int v = indiceVertice(d.getX(), d.getY());
+        int v = traduzir(d);
         while (prev[v] != -1) {
-            int x = verticeParaX(v);
-            int y = verticeParaY(v);
+            int x = traduzirParaX(v);
+            int y = traduzirParaY(v);
             passos.add(new Localizacao(x, y));
             v = prev[v];
         }
@@ -169,29 +194,33 @@ public class Mapa {
         return Collections.unmodifiableList(passos);
     }
 
-    public int[][] getDists(Veiculo o) {
-        return getDists(o, GVeiculo);
+    private ConjuntoObjetoSimulacao getPontosDeInteresseMutavel(PontoDeInteresse pdi) {
+        return pontosDeInteresse[pdi.ordinal()];
     }
 
-    public int[][] getDists(PedestreAmbulante p) {
-        return getDists(p, GPedestre);
+    public void addPontoDeInteresse(PontoDeInteresse pdi, ObjetoSimulacao o) {
+        getPontosDeInteresseMutavel(pdi).add(o);
     }
 
-    private int[][] getDists(ObjetoAmbulante o, Grafo G) {
-        Localizacao l = o.getLocalizacao();
-        int s = indiceVertice(l.getX(), l.getY());
+    public Set<ObjetoSimulacao> getPontosDeInteresse(PontoDeInteresse pdi) {
+        return Collections.unmodifiableSet(getPontosDeInteresseMutavel(pdi));
+    }
 
-        int[] dist = G.dijkstra(s).dist;
+    public ObjetoSimulacao getPontoDeInteresseMaisProximo(ObjetoAmbulante o, PontoDeInteresse pdi) {
+        Set<ObjetoSimulacao> pontos = getPontosDeInteresse(pdi);
+        ObjetoSimulacao maisProximo = null;
+        int menorDistancia = Grafo.INF;
 
-        int[][] dists = new int[altura][largura];
-
-        for (int y = 0; y < altura; y++) {
-            for (int x = 0; x < largura; x++) {
-                dists[y][x] = dist[indiceVertice(x, y)];                
+        int[] dist = getGrafo(o.getTipoGrafo()).dijkstra(traduzir(o.getLocalizacao())).dist;
+        for (ObjetoSimulacao s : pontos) {
+            int v = traduzir(s.getLocalizacao());
+            if (dist[v] < menorDistancia) {
+                menorDistancia = dist[v];
+                maisProximo = s;
             }
         }
 
-        return dists;
+        return maisProximo;
     }
 
     /**
@@ -200,17 +229,7 @@ public class Mapa {
      * @return matriz de objetos da camada
      */
     private ObjetoSimulacao[][] getCamada(Camada c) {
-        switch (c) {
-            case FOREGROUND:
-                return foreground;
-            case BACKGROUND:
-                return background;
-            case MIDDLE:
-                return middle;
-            default:
-                System.out.println("getCamada: camada inválida");
-                return null;
-        }
+        return camadas[c.ordinal()];
     }
 
     /**
@@ -272,7 +291,7 @@ public class Mapa {
 
     public List<ObjetoSimulacao> getObjetosEm(int x, int y) {
         List<ObjetoSimulacao> objetos = new ArrayList<>();
-        for (Camada c : Camada.TODAS) {
+        for (Camada c : Camada.values()) {
             ObjetoSimulacao o = getObjeto(c, x, y);
             if (o != null) {
                 objetos.add(o);
@@ -311,7 +330,7 @@ public class Mapa {
     public List<ObjetoSimulacao> getObjetos() {
         List<ObjetoSimulacao> objetosValidos = new ArrayList<>();
 
-        for (Camada c : Camada.TODAS) {
+        for (Camada c : Camada.values()) {
             for (int y = getAltura() - 1; y >= 0; y--) {
                 for (int x = getLargura() - 1; x >= 0; x--) {
                     ObjetoSimulacao objeto = getObjeto(c, x, y);
@@ -332,5 +351,4 @@ public class Mapa {
     public int getAltura() {
         return altura;
     }
-
 }

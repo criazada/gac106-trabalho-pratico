@@ -1,15 +1,22 @@
 package simulacao.grafo;
 
+import java.util.ArrayList;
 import java.util.PriorityQueue;
 
 public class Grafo {
     public static final int INF = 1000000000;
+    private class ListaAresta extends ArrayList<Aresta> {}
     private ListaAresta[] G;
     private int n;
 
     public Grafo(int n) {
         this.n = n;
         limpar();
+    }
+
+    protected Grafo(ListaAresta[] G, int n) {
+        this.G = G;
+        this.n = n;
     }
 
     public void limpar() {
@@ -46,7 +53,7 @@ public class Grafo {
             if (visitado[u]) continue;
             visitado[u] = true;
 
-            for (Aresta a : G[u].getArestas()) {
+            for (Aresta a : G[u]) {
                 int v = a.getV();
                 int novo = a.getPeso() + d;
                 if (novo < dist[v]) {
@@ -58,6 +65,10 @@ public class Grafo {
         }
 
         return new ResultadoDijkstra(dist, prev);
+    }
+
+    public GrafoImutavel getGrafoImutavel() {
+        return new GrafoImutavel(this.G, this.n);
     }
 
     private class EntradaVertice implements Comparable<EntradaVertice> {
@@ -83,5 +94,17 @@ public class Grafo {
             this.dist = dist;
             this.prev = prev;
         }
+    }
+
+    public class GrafoImutavel extends Grafo {
+        private GrafoImutavel(ListaAresta[] G, int n) {
+            super(G, n);
+        }
+
+        @Override
+        public void limpar() {}
+
+        @Override
+        public void addAresta(int v, Aresta a) {}
     }
 }

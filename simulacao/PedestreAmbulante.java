@@ -11,11 +11,9 @@ import java.awt.Image;
 
 public class PedestreAmbulante extends ObjetoAmbulante {
     private int lentidao;
-    private int raiva;
 
     public PedestreAmbulante(Localizacao localizacao, Localizacao destino, Mapa mapa, Random rng) {
-        super(selecionarImagem(rng.nextInt(3)), localizacao, mapa, rng, 1);
-        setLocalizacaoDestino(destino);
+        super(selecionarImagem(rng.nextInt(3)), localizacao, destino, mapa, Mapa.TipoGrafo.PEDESTRE, rng);
     }
 
     private static Image selecionarImagem(int rng) {
@@ -35,39 +33,16 @@ public class PedestreAmbulante extends ObjetoAmbulante {
     public void executarAcao() {
         lentidao++;
         if (lentidao % 2 == 0) return;
-
-        Localizacao destino = getLocalizacaoDestino();
-
-        if (getcaminho().size() == 0) {
-            getMapa().removerObjeto(this);
-            return;
-        }
-
-        if (destino != null) {
-            Localizacao prox = proximaLocalizacao();
-            if (prox == getLocalizacao()) {
-                estaNoDestino();
-            }
-            // pedestre só anda se o espaço de destino está livre
-            else if (livre(prox)) {
-                setLocalizacao(prox);
-                incrementarPasso();
-                raiva = 0;
-            } else {
-                raiva++;
-            }
-
-            if (raiva >= 5) {
-                Direcao d = Direcao.TODAS[getRng().nextInt(4)];
-                prox = d.seguindo(getLocalizacao());
-                if (livre(prox)) {
-                    setLocalizacao(prox);
-                    atualizarRota();
-                }
-            }
-        }
+        super.executarAcao();
     }
-    public void estaNoDestino(){
+
+    @Override
+    public void fimDeRota() {
         getMapa().removerObjeto(this);
+    }
+
+    @Override
+    public boolean andarComRaivaPara(ObjetoSimulacao o, Direcao d) {
+        return livre(d.seguindo(getLocalizacao()));
     }
 }

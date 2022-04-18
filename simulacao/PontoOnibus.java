@@ -1,71 +1,76 @@
 package simulacao;
 
-import java.util.Random;
-import java.util.ArrayList;
-import java.util.List;
+import simulacao.Mapa.Camada;
 
 public class PontoOnibus extends ObjetoSimulacao {
-    public static List<Localizacao> posicoesRua = new ArrayList<Localizacao>();
-    public static List<Localizacao> posicoesCalcada = new ArrayList<Localizacao>();
+    private PontoOnibusCalcada calcada;
 
-    public PontoOnibus( Localizacao localizacao, Mapa mapa, Random rng) {
-        super(Recurso.PONTO_ONIBUS.getImagem(), localizacao, mapa, Mapa.Camada.FOREGROUND, rng);
+    public PontoOnibus(Localizacao localizacao, Mapa mapa) {
+        this(localizacao, mapa, Mapa.PontoDeInteresse.PONTO_ONIBUS, true);
     }
+
+    private PontoOnibus(Localizacao localizacao, Mapa mapa, Mapa.PontoDeInteresse pdi, boolean gerarCalcada) {
+        super(Recurso.PONTO_ONIBUS.getImagem(), localizacao, mapa, Mapa.Camada.FOREGROUND, pdi, null);
+
+        if (gerarCalcada) {
+            int x0 = localizacao.getX();
+            int y0 = localizacao.getY();
+
+            boolean encontrou = false;
+            int[][] p = {{0, 1}, {1, 0}, {-1, 0}, {0 , -1}, {1, 1}, {1, -1}, {-1, 1}, {1, -1}};
+            int i, x = 0, y = 0;
+            for (i = 0; i < p.length; i++) {
+                x = p[i][0] + x0;
+                y = p[i][1] + y0;
+                ObjetoSimulacao o = mapa.getObjeto(Camada.BACKGROUND, x, y);
+                if (o != null && o instanceof Calcada) {
+                    encontrou = true;
+                    break;
+                }
+            }
+
+            if (encontrou) {
+                calcada = new PontoOnibusCalcada(new Localizacao(x, y), mapa, this);
+            }
+        }
+    }
+
     @Override
-    public void executarAcao(){
-        // nao faz nada
-    }
+    public void executarAcao() { }
+
     @Override
     public boolean transparentePara(ObjetoSimulacao o) {
         return true;
     }
-    
-    public static Localizacao pontoMaisProximoCalcada( Localizacao inicial){
-        int menorDistancia = Integer.MAX_VALUE;
-        int indice = 0;
-        for (int i = 0; i < posicoesCalcada.size(); i++) {
-            int distancia = posicoesCalcada.get(i).distancia(inicial);
-            if (distancia < menorDistancia) {
-                menorDistancia = distancia;
-                indice = i;
-            }
-        }
-        return posicoesCalcada.get(indice);
-    }
-    /**
-     * Retorna o ponto mais proximo da rua
-     * @param inicial a localizacao do pedreste
-     * @return o ponto mais proximo da rua
-     */
-    public static Localizacao pontoMaisProximoRua( Localizacao inicial){
-        int menorDistancia = Integer.MAX_VALUE;
-        int indice = 0;
-        for (int i = 0; i < posicoesRua.size(); i++) {
-            int distancia = posicoesRua.get(i).distancia(inicial);
-            if (distancia < menorDistancia) {
-                menorDistancia = distancia;
-                indice = i;
-            }
-        }
-        return posicoesRua.get(indice);
-    }
-    
-    public static boolean pedestreEstaNoPonto(Localizacao loc){
-        for (Localizacao localizacao : posicoesCalcada) {
-            if (loc.distancia(localizacao) == 0) {
-                return true;
-            }
-        }
-        return false;
+
+    public PontoOnibusCalcada getPontoCalcada() {
+        return calcada;
     }
 
-    public static int onibusEstaNoPonto(Localizacao loc){
-        for (int i = 0; i < Onibus.posicoesOnibus.size(); i++) {
-            Localizacao localizacao = Onibus.posicoesOnibus.get(i);
-            if (loc.distancia(localizacao) == 0) {
-                return i;
-            }
+    private void setCalcada(PontoOnibusCalcada calcada) {
+        this.calcada = calcada;
+    }
+
+    public boolean temOnibus() {
+        return getMapa().getObjetoMiddle(getLocalizacao()) instanceof Onibus;
+    }
+
+    public class PontoOnibusCalcada extends PontoOnibus {
+        private PontoOnibus rua;
+
+        private PontoOnibusCalcada(Localizacao localizacao, Mapa mapa, PontoOnibus rua) {
+            super(localizacao, mapa, Mapa.PontoDeInteresse.PONTO_ONIBUS_CALCADA, false);
+            setCalcada(this);
+            this.rua = rua;
         }
-        return -1;
+
+        public PontoOnibus getPontoRua() {
+            return rua;
+        }
+
+        @Override
+        public boolean temOnibus() {
+            return rua.temOnibus();
+        }
     }
 }

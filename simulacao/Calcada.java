@@ -4,7 +4,7 @@ import simulacao.Mapa.Camada;
 
 public class Calcada extends ObjetoSimulacao {
     public Calcada(Localizacao localizacao, Mapa mapa) {
-        super(Recurso.CALCADA.getImagem(), localizacao, mapa, Camada.BACKGROUND, null);
+        super(Recurso.CALCADA.getImagem(), localizacao, mapa, Camada.BACKGROUND, Mapa.PontoDeInteresse.ESTATICO, null);
     }
 
     @Override

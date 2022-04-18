@@ -1,6 +1,5 @@
 package simulacao;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -29,53 +28,46 @@ public class Simulacao {
         for (int i = 0; i < altura; i++) {
             for (int j = 0; j < largura; j++) {
                 if (ruas[i][j][0] != null) {
-                    Rua rua = new Rua(ruas[i][j], faixas[i][j], new Localizacao(j, i), mapa);
-                    mapa.adicionarObjeto(rua);
+                    new Rua(ruas[i][j], faixas[i][j], new Localizacao(j, i), mapa);
                 } else {
-                    Calcada c = new Calcada(new Localizacao(j, i), mapa);
-                    mapa.adicionarObjeto(c);
+                    new Calcada(new Localizacao(j, i), mapa);
                 }
             }
         }
         mapa.atualizarGrafos();
-        
+
+        RotaOnibus rota = new RotaOnibus();
+
         // gera pontos de onibus
         for (int i = 0; i < 2; i++) {
             Localizacao loc = getRuaAleatoria(rand);
-            PontoOnibus.posicoesRua.add(loc);
-            PontoOnibus.posicoesCalcada.add(getCalcadaMaisProxima(loc));
-            mapa.adicionarObjeto(new PontoOnibus(getCalcadaMaisProxima(loc), mapa, rand));
-            mapa.adicionarObjeto(new PontoOnibus(loc, mapa, rand));
+            PontoOnibus po = new PontoOnibus(loc, mapa);
             System.out.println("ponto onibus Rua " + loc);
-            System.out.println("ponto onibus Calada " + getCalcadaMaisProxima(loc));
+            rota.add(po);
         }
 
-        for (int i = 0; i < 2; i++) {
-            Veiculo v = new Onibus(i, (i+1) % PontoOnibus.posicoesRua.size(),  mapa, rand);
-            mapa.adicionarObjeto(v);
+        for (int i = 0; i < 1; i++) {
+            new Onibus(getRuaAleatoria(rand), rota, i, mapa);
         }
-        
-        for (int i = 0; i < 100; i++) {
+
+        for (int i = 0; i < 200; i++) {
             Localizacao s1 = getCalcadaAleatoria(rand);
             Localizacao d1 = getCalcadaAleatoria(rand);
-            PedestreAmbulante p = new PedresteOnibus(s1,  d1, mapa, rand);
-            mapa.adicionarObjeto(p);
+            new PedresteOnibus(s1, d1, mapa, rand);
         }
-        
+
         long inicio = System.nanoTime();
         for (int i = 0; i < 150; i++) {
-            // Localizacao s = getRuaAleatoria(rand);
-            // Localizacao d = getRuaAleatoria(rand);
-            // Localizacao s1 = getCalcadaAleatoria(rand);
-            // Localizacao d1 = getCalcadaAleatoria(rand);
-            // Veiculo v = new Carro(s, d, mapa, rand);
-            // PedestreAmbulante p = new PedestreAmbulante(s1, d1, mapa, rand);
-            // mapa.adicionarObjeto(v);
-            // mapa.adicionarObjeto(p);
+            Localizacao s = getRuaAleatoria(rand);
+            Localizacao d = getRuaAleatoria(rand);
+            Localizacao s1 = getCalcadaAleatoria(rand);
+            Localizacao d1 = getCalcadaAleatoria(rand);
+            new Carro(s, d, mapa, rand);
+            new PedestreAmbulante(s1, d1, mapa, rand);
         }
+
         int tempo = (int) ((System.nanoTime() - inicio) / 1000000);
         System.out.printf("T: %d%n", tempo);
-        // Inicializando o mapa com o veículo
         janelaSimulacao = new JanelaSimulacao(mapa);
     }
 
@@ -98,27 +90,6 @@ public class Simulacao {
         } 
         return new Localizacao(x, y);
     }
-    /**
-     * Retorna a calçada mais proxima
-     */
-    public  Localizacao getCalcadaMaisProxima(Localizacao rua) {
-        List<Localizacao> posMaisProximas = new ArrayList<Localizacao>();
-        posMaisProximas.add(new Localizacao(rua.getX(), rua.getY() +1));
-        posMaisProximas.add(new Localizacao(rua.getX() -1, rua.getY() ));
-        posMaisProximas.add(new Localizacao(rua.getX() +1, rua.getY() ));
-        posMaisProximas.add(new Localizacao(rua.getX(), rua.getY() -1));
-        posMaisProximas.add(new Localizacao(rua.getX() +1, rua.getY() +1));
-        posMaisProximas.add(new Localizacao(rua.getX() -1, rua.getY() +1));
-        posMaisProximas.add(new Localizacao(rua.getX() +1, rua.getY() -1));
-        posMaisProximas.add(new Localizacao(rua.getX() -1, rua.getY() -1));
-        int index = 0;
-        while (!(mapa.getObjeto(Mapa.Camada.BACKGROUND, posMaisProximas.get(index).getX(),
-        posMaisProximas.get(index).getY()) instanceof Calcada)) {
-            index++;
-        } 
-        return posMaisProximas.get(index);
-    }
-
 
     /**
      * Executa n iterações da simulação
