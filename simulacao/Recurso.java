@@ -21,7 +21,8 @@ public enum Recurso {
     PEDESTRE_1("pedestre1.png"),
     PEDESTRE_2("pedestre2.png"),
     PEDESTRE_3("pedestre3.png"),
-    FAIXA("faixa-horizontal.png");
+    FAIXA("faixa-horizontal.png"),
+    OBRA("obra.png");
 
     private Image imagem;
     private static final String base = "imagens";

@@ -55,6 +55,12 @@ public class Simulacao {
             Localizacao d1 = getCalcadaAleatoria(rand);
             new PedresteOnibus(s1, d1, mapa, rand);
         }
+        //gera obras
+        for(int i = 0; i < 10; i++){
+            Localizacao loc = getRuaAleatoria(rand);
+            mapa.adicionarObjeto(new Obra(loc, mapa, rand));
+        }
+
 
         long inicio = System.nanoTime();
         for (int i = 0; i < 150; i++) {

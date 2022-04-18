@@ -16,7 +16,7 @@ public class Mapa {
     }
 
     public enum PontoDeInteresse {
-        PONTO_ONIBUS, PONTO_ONIBUS_CALCADA, ESTATICO, EXECUTAVEL;
+        PONTO_ONIBUS, PONTO_ONIBUS_CALCADA, ESTATICO, EXECUTAVEL, OBRA;
     }
 
     public enum TipoGrafo {
