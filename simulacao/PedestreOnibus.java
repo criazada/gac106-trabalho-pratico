@@ -4,7 +4,7 @@ import java.util.Random;
 
 import simulacao.PontoOnibus.PontoOnibusCalcada;
 
-public class PedresteOnibus extends PedestreAmbulante {
+public class PedestreOnibus extends PedestreAmbulante {
     private enum Estado {
         AntesOnibus,
         Onibus,
@@ -13,7 +13,7 @@ public class PedresteOnibus extends PedestreAmbulante {
     Estado estado;
     private PontoOnibusCalcada pontoDestino;
 
-    public PedresteOnibus(Localizacao localizacao, Localizacao destino, Mapa mapa, Random rng) {
+    public PedestreOnibus(Localizacao localizacao, Localizacao destino, Mapa mapa, Random rng) {
         super(localizacao, null, mapa, rng);
         this.estado = Estado.AntesOnibus;
         setPontoDeDestino(getPontoMaisProximo());
@@ -36,11 +36,17 @@ public class PedresteOnibus extends PedestreAmbulante {
             if (pontoDestino.temOnibus()) {
                 estado = Estado.Onibus;
                 if (getLocalizacao().equals(pontoDestino.getLocalizacao())) {
-                    getMapa().removerObjeto(this);
+                    ObjetoSimulacao o = getMapa().getObjetoMiddle(pontoDestino.getPontoRua().getLocalizacao());
+                    if (o != null && o instanceof Onibus) {
+                        if (((Onibus) o).receberPassageiro(this)) {
+                            getEstatisticas().pedestreEntrouNoOnibus();
+                            getMapa().removerObjeto(this);
+                        }
+                    }
                 }
             }
         }
-        else if ( estado == Estado.Onibus) {
+        else if (estado == Estado.Onibus) {
             //se esta no desitno e onibus ta no ponto 
         }
     }

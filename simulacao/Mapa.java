@@ -38,6 +38,8 @@ public class Mapa {
     private int largura;
     private int altura;
 
+    private Estatisticas estatisticas;
+
     private static final int LARGURA_PADRAO = 35;
     private static final int ALTURA_PADRAO = 35;
 
@@ -63,6 +65,12 @@ public class Mapa {
         for (int i = 0; i < pontosDeInteresse.length; i++) {
             pontosDeInteresse[i] = new ConjuntoObjetoSimulacao();
         }
+
+        estatisticas = new Estatisticas();
+    }
+
+    public Estatisticas getEstatisticas() {
+        return estatisticas;
     }
 
     /**

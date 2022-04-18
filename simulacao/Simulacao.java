@@ -47,20 +47,19 @@ public class Simulacao {
         }
 
         for (int i = 0; i < 1; i++) {
-            new Onibus(getRuaAleatoria(rand), rota, i, mapa);
+            new Onibus(getRuaAleatoria(rand), 10, rota, i, mapa);
         }
 
         for (int i = 0; i < 200; i++) {
             Localizacao s1 = getCalcadaAleatoria(rand);
             Localizacao d1 = getCalcadaAleatoria(rand);
-            new PedresteOnibus(s1, d1, mapa, rand);
+            new PedestreOnibus(s1, d1, mapa, rand);
         }
         //gera obras
         for(int i = 0; i < 10; i++){
             Localizacao loc = getRuaAleatoria(rand);
             mapa.adicionarObjeto(new Obra(loc, mapa, rand));
         }
-
 
         long inicio = System.nanoTime();
         for (int i = 0; i < 150; i++) {

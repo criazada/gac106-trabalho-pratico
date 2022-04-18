@@ -48,6 +48,10 @@ public abstract class ObjetoSimulacao {
         return imagens;
     }
 
+    public Estatisticas getEstatisticas() {
+        return mapa.getEstatisticas();
+    }
+
     public void setImagem(Image imagem) {
         this.imagens = new Image[]{imagem};
     }
