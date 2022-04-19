@@ -143,7 +143,14 @@ public class Mapa {
             atualizarGrafo(getGrafoMutavel(tp), tp.f);
         }
     }
-
+    /**
+     * Busca por profundidade, encontra todas as arestas alcançáveis a partir de um ponto.
+     * @param G grafo a ser preenchido
+     * @param f fantasma que ira verificar a colição
+     * @param visitado matriz que indica se um vertice ja foi visitado
+     * @param x coordenada x do vertice
+     * @param y coordenada y do vertice
+     */
     private void dfs(Grafo G, Fantasma f, boolean[][] visitado, int x, int y) {
         if (visitado[y][x]) return;
         visitado[y][x] = true;
@@ -230,7 +237,11 @@ public class Mapa {
 
         return maisProximo;
     }
-
+    /**
+     * Gera uma rua aleatoria
+     * @param r intancia de Random para gerar numeros aleatorios a partir de uma seed definida
+     * @return uma localização de rua aleatoria
+     */
     public Localizacao getRuaAleatoria(Random r) {
         int x = r.nextInt(getLargura());
         int y = r.nextInt(getAltura());
