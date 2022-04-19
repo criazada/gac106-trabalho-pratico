@@ -41,6 +41,7 @@ public class Estatisticas {
     public void pedestreEntrouNoOnibus() {
         System.out.println("Passageiro entrou no onibus");
         passageiros++;
+        totalPassageiros++;
     }
      /**
      * Incrementa a estatitica de passageiros que sairam do onibus
