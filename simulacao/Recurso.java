@@ -3,6 +3,9 @@ package simulacao;
 import java.awt.Image;
 import javax.swing.ImageIcon;
 
+/**
+ * Enumerador para os tipos guardar as imagens dos objetos que podem ser criados na simulação.
+ */
 public enum Recurso {
     CARRO_1("marquinhos2.png"),
     CARRO_2("mate.png"),
@@ -27,10 +30,15 @@ public enum Recurso {
     private Image imagem;
     private static final String base = "imagens";
 
+    /**
+     * @param nome O nome do recurso.
+     */
     private Recurso(String nome) {
         imagem = new ImageIcon(getClass().getResource(base + "/" + nome)).getImage();
     }
-
+    /**
+     * @return A imagem do recurso.
+     */
     public Image getImagem() {
         return imagem;
     }

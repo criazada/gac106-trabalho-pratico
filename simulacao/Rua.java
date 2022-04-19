@@ -5,7 +5,13 @@ import java.awt.Image;
 public class Rua extends ObjetoSimulacao {
     private Direcao[] direcoes;
     private boolean faixa;
-
+    /**
+     * Constroi uma rua.
+     * @param Direção A direção da rua, Norte, Sul, Leste ou Oeste.
+     * @param faixa se essa estancia de rua é uma faixa de pedestre.
+     * @param localizacao A localizacao da rua.
+     * @param mapa A instancia do mapa.
+     */
     public Rua(Direcao[] direcoes, boolean faixa, Localizacao localizacao, Mapa mapa) {
         super((Image) null, localizacao, mapa, Mapa.Camada.BACKGROUND, Mapa.PontoDeInteresse.ESTATICO, null);
         Image[] imagens = new Image[direcoes.length + 3];
@@ -18,11 +24,31 @@ public class Rua extends ObjetoSimulacao {
         this.direcoes = direcoes;
         this.faixa = faixa;
     }
-
+    /**
+     * Constroi uma rua.
+     * @param direções vetor direçoes da rua, Norte, Sul, Leste ou Oeste.
+     * @param localizacao A localizacao da rua.
+     * @param mapa A instancia do mapa.
+     */
     public Rua(Direcao[] direcoes, Localizacao localizacao, Mapa mapa) {
         this(direcoes, false, localizacao, mapa);
     }
 
+     /**
+     * Constroi uma rua.
+     * @param direção direção da rua, Norte, Sul, Leste ou Oeste.
+     * @param localizacao A localizacao da rua.
+     * @param mapa A instancia do mapa.
+     */
+    public Rua(Direcao direcao, Localizacao localizacao, Mapa mapa) {
+        this(new Direcao[]{direcao}, localizacao, mapa);
+    }
+
+    /**
+     * Retorna a imagem da seta para a direção dada.
+     * @param direcao A direção da rua.
+     * @return A imagem da seta para a direção dada.
+     */
     private Image getSetaParaDirecao(Direcao d) {
         if (d == null) return null;
 
@@ -47,10 +73,13 @@ public class Rua extends ObjetoSimulacao {
         return r.getImagem();
     }
 
-    public Rua(Direcao direcao, Localizacao localizacao, Mapa mapa) {
-        this(new Direcao[]{direcao}, localizacao, mapa);
-    }
-
+    /**
+     * Verifica se este objeto é transparente para outro objeto.
+     * Útil caso somente alguns tipos de objetos possam passar por este.
+     * Muito relevante para objetos no background.
+     * @param o O outro objeto
+     * @return Transparência deste objeto na visão de outro objeto.
+     */
     @Override
     public boolean transparentePara(ObjetoSimulacao o) {
         if (o instanceof FantasmaPedestre || o instanceof PedestreAmbulante) return faixa;
@@ -60,7 +89,9 @@ public class Rua extends ObjetoSimulacao {
         }
         return false;
     }
-
+    /**
+     * Como Rua nao tem movimento sua ação é nula.
+     */
     @Override
     public void executarAcao() { }
 }
