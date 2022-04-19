@@ -371,11 +371,15 @@ public class Mapa {
 
         return Collections.unmodifiableList(objetosValidos);
     }
-
+    /**
+     * @return Retorna a largura do mapa.
+     */
     public int getLargura() {
         return largura;
     }
-
+    /**
+     * @return Retorna a altura do mapa.
+     */
     public int getAltura() {
         return altura;
     }
