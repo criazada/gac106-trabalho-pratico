@@ -27,10 +27,23 @@ public abstract class ObjetoAmbulante extends ObjetoSimulacao {
         return grafo;
     }
 
+    protected Localizacao gerarCandidatoLocalizacaoDestino() {
+        return getMapa().getRuaAleatoria(getRng());
+    }
+
     public void setLocalizacaoDestino(Localizacao localizacaoDestino) {
-        this.localizacaoDestino = localizacaoDestino;
         if (localizacaoDestino != null) {
+            this.localizacaoDestino = localizacaoDestino;
             atualizarRota();
+        } else {
+            int i;
+            for (i = 0; caminho == null || (i < 10 && caminho.size() == passo); i++) {
+                this.localizacaoDestino = gerarCandidatoLocalizacaoDestino();
+                atualizarRota();
+            }
+            if (i == 10) {
+                getMapa().removerObjeto(this);
+            }
         }
     }
 
@@ -93,6 +106,12 @@ public abstract class ObjetoAmbulante extends ObjetoSimulacao {
         if (raiva >= 5) {
             Direcao d = Direcao.TODAS[getRng().nextInt(4)];
             prox = d.seguindo(getLocalizacao());
+            int l = getMapa().getLargura();
+            int a = getMapa().getAltura();
+            int x = prox.getX();
+            int y = prox.getY();
+            if (x < 0 || x >= l || y < 0 || y >= a) return;
+
             boolean andar = true;
             for (ObjetoSimulacao o : getMapa().getObjetosEm(prox)) {
                 if (o != null && !andarComRaivaPara(o, d)) {
@@ -107,7 +126,9 @@ public abstract class ObjetoAmbulante extends ObjetoSimulacao {
         }
     }
 
-    public void fimDeRota() {}
+    public void fimDeRota() {
+        setLocalizacaoDestino(null);
+    }
 
     public boolean andarComRaivaPara(ObjetoSimulacao o, Direcao d) {
         return o instanceof Rua && livre(o.getLocalizacao());

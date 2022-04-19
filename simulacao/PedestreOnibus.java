@@ -12,11 +12,15 @@ public class PedestreOnibus extends PedestreAmbulante {
     } 
     Estado estado;
     private PontoOnibusCalcada pontoDestino;
+    private PontoOnibus pontoFinal;
+    private Onibus onibus;
 
-    public PedestreOnibus(Localizacao localizacao, Localizacao destino, Mapa mapa, Random rng) {
-        super(localizacao, null, mapa, rng);
+    public PedestreOnibus(Localizacao localizacao, Mapa mapa, Random rng) {
+        super(localizacao, mapa, rng);
         this.estado = Estado.AntesOnibus;
         setPontoDeDestino(getPontoMaisProximo());
+        Object[] pontos = getMapa().getPontosDeInteresse(Mapa.PontoDeInteresse.PONTO_ONIBUS).toArray();
+        pontoFinal = (PontoOnibus) pontos[rng.nextInt(pontos.length)];
     }
 
     private void setPontoDeDestino(PontoOnibusCalcada ponto) {
@@ -26,6 +30,12 @@ public class PedestreOnibus extends PedestreAmbulante {
         }
     }
 
+    @Override
+    protected Localizacao gerarCandidatoLocalizacaoDestino() {
+        PontoOnibusCalcada[] poc = getMapa().getPontosDeInteresse(Mapa.PontoDeInteresse.PONTO_ONIBUS_CALCADA).toArray(new PontoOnibusCalcada[0]);
+        return poc[getRng().nextInt(poc.length)].getLocalizacao();
+    }
+
     private PontoOnibusCalcada getPontoMaisProximo() {
         return (PontoOnibusCalcada) getMapa().getPontoDeInteresseMaisProximo(this, Mapa.PontoDeInteresse.PONTO_ONIBUS_CALCADA);
     }
@@ -33,21 +43,26 @@ public class PedestreOnibus extends PedestreAmbulante {
     @Override
     public void fimDeRota() {
         if (estado == Estado.AntesOnibus) {
-            if (pontoDestino.temOnibus()) {
-                estado = Estado.Onibus;
+            if (pontoDestino != null && pontoDestino.temOnibus()) {
                 if (getLocalizacao().equals(pontoDestino.getLocalizacao())) {
                     ObjetoSimulacao o = getMapa().getObjetoMiddle(pontoDestino.getPontoRua().getLocalizacao());
-                    if (o != null && o instanceof Onibus) {
-                        if (((Onibus) o).receberPassageiro(this)) {
-                            getEstatisticas().pedestreEntrouNoOnibus();
-                            getMapa().removerObjeto(this);
-                        }
+                    if (o instanceof Onibus && ((Onibus) o).receberPassageiro(this)) {
+                        getEstatisticas().pedestreEntrouNoOnibus();
+                        getMapa().removerObjeto(this);
+                        estado = Estado.Onibus;
+                        onibus = (Onibus) o;
                     }
                 }
             }
-        }
-        else if (estado == Estado.Onibus) {
+        } else if (estado == Estado.Onibus) {
             //se esta no desitno e onibus ta no ponto 
+            getEstatisticas().pedestreNoOnibus();
+            if (onibus.getLocalizacao().equals(pontoFinal.getLocalizacao())) {
+                if (pontoFinal.getPontoCalcada() == null) return;
+                if (livre(pontoFinal.getPontoCalcada().getLocalizacao()) && onibus.removerPassageiro(this)) {
+                    getEstatisticas().pedestreSaiuDoOnibus();
+                }
+            }
         }
     }
 }

@@ -12,8 +12,8 @@ import java.awt.Image;
 public class PedestreAmbulante extends ObjetoAmbulante {
     private int lentidao;
 
-    public PedestreAmbulante(Localizacao localizacao, Localizacao destino, Mapa mapa, Random rng) {
-        super(selecionarImagem(rng.nextInt(3)), localizacao, destino, mapa, Mapa.TipoGrafo.PEDESTRE, rng);
+    public PedestreAmbulante(Localizacao localizacao, Mapa mapa, Random rng) {
+        super(selecionarImagem(rng.nextInt(3)), localizacao, null, mapa, Mapa.TipoGrafo.PEDESTRE, rng);
     }
 
     private static Image selecionarImagem(int rng) {
@@ -30,15 +30,15 @@ public class PedestreAmbulante extends ObjetoAmbulante {
     }
 
     @Override
+    protected Localizacao gerarCandidatoLocalizacaoDestino() {
+        return getMapa().getCalcadaAleatoria(getRng());
+    }
+
+    @Override
     public void executarAcao() {
         lentidao++;
         if (lentidao % 2 == 0) return;
         super.executarAcao();
-    }
-
-    @Override
-    public void fimDeRota() {
-        getMapa().removerObjeto(this);
     }
 
     @Override

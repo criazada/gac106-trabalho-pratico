@@ -8,12 +8,7 @@ import java.awt.Image;
  * @author David J. Barnes and Michael Kolling and Luiz Merschmann
  */
 public class Veiculo extends ObjetoAmbulante {
-    public Veiculo(Image imagem,Localizacao localizacao, Localizacao destino, Mapa mapa, Random rng) {
-        super(imagem, localizacao, destino, mapa, Mapa.TipoGrafo.VEICULO, rng);
-    }
-
-    @Override
-    public void fimDeRota() {
-        getMapa().removerObjeto(this);
+    public Veiculo(Image imagem, Localizacao localizacao, Mapa mapa, Random rng) {
+        super(imagem, localizacao, null, mapa, Mapa.TipoGrafo.VEICULO, rng);
     }
 }

@@ -4,8 +4,8 @@ import java.util.Random;
 import java.awt.Image;
 
 public class Carro extends Veiculo {
-    public Carro(Localizacao localizacao, Localizacao destino, Mapa mapa, Random rng) {
-        super(selecionarImagem(rng.nextInt(3)), localizacao, destino, mapa, rng);
+    public Carro(Localizacao localizacao, Mapa mapa, Random rng) {
+        super(selecionarImagem(rng.nextInt(3)), localizacao, mapa, rng);
     }
 
     private static Image selecionarImagem(int rng) {
@@ -21,4 +21,3 @@ public class Carro extends Veiculo {
         }
     }
 }
-

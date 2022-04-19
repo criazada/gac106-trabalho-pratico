@@ -8,6 +8,7 @@ public class Principal {
 
     public static void main(String[] args) {
         Simulacao sim = new Simulacao();
-        sim.executarSimulacao(1000000);
+        Estatisticas es = sim.executarSimulacao(1000);
+        es.exibir();
     }
 }

@@ -231,6 +231,26 @@ public class Mapa {
         return maisProximo;
     }
 
+    public Localizacao getRuaAleatoria(Random r) {
+        int x = r.nextInt(getLargura());
+        int y = r.nextInt(getAltura());
+        while (!(getObjeto(Camada.BACKGROUND, x, y) instanceof Rua)) {
+            x = r.nextInt(getLargura());
+            y = r.nextInt(getAltura());
+        } 
+        return new Localizacao(x, y);
+    }
+
+    public Localizacao getCalcadaAleatoria(Random r) {
+        int x = r.nextInt(getLargura());
+        int y = r.nextInt(getAltura());
+        while (!(getObjeto(Camada.BACKGROUND, x, y) instanceof Calcada)) {
+            x = r.nextInt(getLargura());
+            y = r.nextInt(getAltura());
+        } 
+        return new Localizacao(x, y);
+    }
+
     /**
      * Retorna a matriz de objetos de uma camada
      * @param c Camada

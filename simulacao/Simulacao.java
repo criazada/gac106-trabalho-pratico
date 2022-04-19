@@ -39,36 +39,30 @@ public class Simulacao {
         RotaOnibus rota = new RotaOnibus();
 
         // gera pontos de onibus
-        for (int i = 0; i < 4; i++) {
-            Localizacao loc = getRuaAleatoria(rand);
-            PontoOnibus po = new PontoOnibus(loc, mapa);
-            System.out.println("ponto onibus Rua " + loc);
+        for (int i = 0; i < 15; i++) {
+            PontoOnibus po = new PontoOnibus(mapa.getRuaAleatoria(rand), mapa);
             rota.add(po);
         }
 
-        for (int i = 0; i < 1; i++) {
-            new Onibus(getRuaAleatoria(rand), 10, rota, i, mapa, rand);
+        for (int i = 0; i < 5; i++) {
+            new Onibus(mapa.getRuaAleatoria(rand), 10, rota, rand.nextInt(rota.size()), mapa, rand);
         }
 
-        for (int i = 0; i < 200; i++) {
-            Localizacao s1 = getCalcadaAleatoria(rand);
-            Localizacao d1 = getCalcadaAleatoria(rand);
-            new PedestreOnibus(s1, d1, mapa, rand);
+        for (int i = 0; i < 100; i++) {
+            new PedestreOnibus(mapa.getCalcadaAleatoria(rand), mapa, rand);
         }
         //gera obras
         for(int i = 0; i < 10; i++){
-            Localizacao loc = getRuaAleatoria(rand);
-            mapa.adicionarObjeto(new Obra(loc, mapa, rand));
+            new Obra(mapa.getRuaAleatoria(rand), mapa, rand);
         }
 
         long inicio = System.nanoTime();
-        for (int i = 0; i < 150; i++) {
-            Localizacao s = getRuaAleatoria(rand);
-            Localizacao d = getRuaAleatoria(rand);
-            Localizacao s1 = getCalcadaAleatoria(rand);
-            Localizacao d1 = getCalcadaAleatoria(rand);
-            new Carro(s, d, mapa, rand);
-            new PedestreAmbulante(s1, d1, mapa, rand);
+        for (int i = 0; i < 25; i++) {
+            new Carro(mapa.getRuaAleatoria(rand), mapa, rand);
+        }
+
+        for (int i = 0; i < 100; i++) {
+            new PedestreAmbulante(mapa.getCalcadaAleatoria(rand), mapa, rand);
         }
 
         int tempo = (int) ((System.nanoTime() - inicio) / 1000000);
@@ -76,31 +70,11 @@ public class Simulacao {
         janelaSimulacao = new JanelaSimulacao(mapa);
     }
 
-    private Localizacao getRuaAleatoria(Random r) {
-        int x = r.nextInt(mapa.getLargura());
-        int y = r.nextInt(mapa.getAltura());
-        while (!(mapa.getObjeto(Mapa.Camada.BACKGROUND, x, y) instanceof Rua)) {
-            x = r.nextInt(mapa.getLargura());
-            y = r.nextInt(mapa.getAltura());
-        } 
-        return new Localizacao(x, y);
-    }
-
-    private Localizacao getCalcadaAleatoria(Random r) {
-        int x = r.nextInt(mapa.getLargura());
-        int y = r.nextInt(mapa.getAltura());
-        while (!(mapa.getObjeto(Mapa.Camada.BACKGROUND, x, y) instanceof Calcada)) {
-            x = r.nextInt(mapa.getLargura());
-            y = r.nextInt(mapa.getAltura());
-        } 
-        return new Localizacao(x, y);
-    }
-
     /**
      * Executa n iterações da simulação
      * @param n número de iterações
      */
-    public void executarSimulacao(int n) {
+    public Estatisticas executarSimulacao(int n) {
         janelaSimulacao.atualizar();
         for (int i = 0; i < n; i++) {
             long inicio = System.nanoTime();
@@ -110,6 +84,8 @@ public class Simulacao {
             int t = 100 - tempo;
             esperar(t);
         }
+
+        return mapa.getEstatisticas();
     }
 
     /**

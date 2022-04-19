@@ -1,10 +1,8 @@
 package simulacao;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Random;
-
-import simulacao.PontoOnibus.PontoOnibusCalcada;
+import java.util.Set;
 
 /**
  * Representa os veiculos da simulacao.
@@ -16,15 +14,15 @@ public class Onibus extends Veiculo {
     private int esperar;
     private RotaOnibus rota;
     private int capacidade;
-    private List<PedestreOnibus> passageiros;
+    private Set<PedestreOnibus> passageiros;
 
     public Onibus(Localizacao localizacao, int capacidade, RotaOnibus rota, int inicio, Mapa mapa, Random rand) {
-        super(Recurso.ONIBUS.getImagem(), localizacao, null, mapa, rand);
+        super(Recurso.ONIBUS.getImagem(), localizacao, mapa, rand);
         esperar = 5;
         this.rota = rota;
         irParaPonto(inicio);
         this.capacidade = capacidade;
-        passageiros = new ArrayList<>();
+        passageiros = new HashSet<>();
     }
 
     private void irParaPonto(int ponto) {
@@ -45,6 +43,15 @@ public class Onibus extends Veiculo {
         }
     }
 
+    public boolean removerPassageiro(PedestreOnibus pedestre) {
+        if (estaNoPonto() && passageiros.contains(pedestre)) {
+            passageiros.remove(pedestre);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     @Override
     public void fimDeRota() {
         pontoAtual++;
@@ -57,11 +64,12 @@ public class Onibus extends Veiculo {
 
     @Override
     public void executarAcao() {
-        //System.out.println("Onibus " + id + ": " + getLocalizacao());
+        for (PedestreOnibus po : passageiros.toArray(new PedestreOnibus[0])) {
+            po.executarAcao();
+        }
         if (estaNoPonto() && esperar > 0) {
             PontoOnibus ponto = getPontoMaisProximo();
-            PontoOnibusCalcada calcada = ponto.getPontoCalcada();
-            if (!(getMapa().getObjetoMiddle(calcada.getLocalizacao()) instanceof PedestreOnibus) || cheio()) {
+            if (!ponto.temPedestre() || cheio()) {
                 esperar--;
             }
             getEstatisticas().onibusParado();

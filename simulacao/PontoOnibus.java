@@ -17,11 +17,14 @@ public class PontoOnibus extends ObjetoSimulacao {
             int y0 = localizacao.getY();
 
             boolean encontrou = false;
-            int[][] p = {{0, 1}, {1, 0}, {-1, 0}, {0 , -1}, {1, 1}, {1, -1}, {-1, 1}, {1, -1}};
+            int[][] p = {{0, 1}, {1, 0}, {-1, 0}, {0, -1}, {1, 1}, {1, -1}, {-1, 1}, {1, -1}};
+            int l = getMapa().getLargura();
+            int a = getMapa().getAltura();
             int i, x = 0, y = 0;
             for (i = 0; i < p.length; i++) {
                 x = p[i][0] + x0;
                 y = p[i][1] + y0;
+                if (x < 0 || x >= l || y < 0 || y >= a) continue;
                 ObjetoSimulacao o = mapa.getObjeto(Camada.BACKGROUND, x, y);
                 if (o != null && o instanceof Calcada) {
                     encontrou = true;
@@ -53,6 +56,11 @@ public class PontoOnibus extends ObjetoSimulacao {
 
     public boolean temOnibus() {
         return getMapa().getObjetoMiddle(getLocalizacao()) instanceof Onibus;
+    }
+
+    public boolean temPedestre() {
+        if (calcada == null) return false;
+        return getMapa().getObjetoMiddle(calcada.getLocalizacao()) instanceof PedestreOnibus;
     }
 
     public class PontoOnibusCalcada extends PontoOnibus {
