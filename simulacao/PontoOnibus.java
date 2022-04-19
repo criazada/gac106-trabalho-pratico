@@ -4,11 +4,21 @@ import simulacao.Mapa.Camada;
 
 public class PontoOnibus extends ObjetoSimulacao {
     private PontoOnibusCalcada calcada;
-
+    /**
+     * Cria um ponto de onibus.
+     * @param localizacao localizacao do ponto.
+     * @param mapa instancia do mapa da simulacao.
+     */
     public PontoOnibus(Localizacao localizacao, Mapa mapa) {
         this(localizacao, mapa, Mapa.PontoDeInteresse.PONTO_ONIBUS, true);
     }
-
+    /**
+     * Cria um ponto de onibus.
+     * @param localizacao localizacao do ponto.
+     * @param mapa instancia do mapa da simulacao.
+     * @param pontoDeInteresse tipo do ponto.
+     * @param gerarCalcada se deve gerar um ponto na calcada para o ponto na rua.
+     */
     private PontoOnibus(Localizacao localizacao, Mapa mapa, Mapa.PontoDeInteresse pdi, boolean gerarCalcada) {
         super(Recurso.PONTO_ONIBUS.getImagem(), localizacao, mapa, Mapa.Camada.FOREGROUND, pdi, null);
 
@@ -45,19 +55,29 @@ public class PontoOnibus extends ObjetoSimulacao {
     public boolean transparentePara(ObjetoSimulacao o) {
         return true;
     }
-
+    /** 
+     * @return posicao do ponto na calcada.
+     */
     public PontoOnibusCalcada getPontoCalcada() {
         return calcada;
     }
-
+    /**
+     * set a posicao do ponto na calcada.
+     * @param calcada
+     */
     private void setCalcada(PontoOnibusCalcada calcada) {
         this.calcada = calcada;
     }
-
+    /**
+     * @return true se tem onibus no ponto
+     */
     public boolean temOnibus() {
         return getMapa().getObjetoMiddle(getLocalizacao()) instanceof Onibus;
     }
-
+    /**
+     * 
+     * @return true se tem pedestre no ponto da calcada
+     */
     public boolean temPedestre() {
         if (calcada == null) return false;
         return getMapa().getObjetoMiddle(calcada.getLocalizacao()) instanceof PedestreOnibus;
@@ -65,17 +85,24 @@ public class PontoOnibus extends ObjetoSimulacao {
 
     public class PontoOnibusCalcada extends PontoOnibus {
         private PontoOnibus rua;
-
+        /**
+         * Cria um ponto de onibus na calcada.
+         * @param localizacao localizacao do ponto.
+         * @param mapa instancia do mapa da simulacao.
+         * @param rua ponto de onibus na rua.
+         */
         private PontoOnibusCalcada(Localizacao localizacao, Mapa mapa, PontoOnibus rua) {
             super(localizacao, mapa, Mapa.PontoDeInteresse.PONTO_ONIBUS_CALCADA, false);
             setCalcada(this);
             this.rua = rua;
         }
-
+        /**
+         * @return retonar o ponto da rua que o ponto de onibus na calcada esta mais proximo
+         */
         public PontoOnibus getPontoRua() {
             return rua;
         }
-
+        
         @Override
         public boolean temOnibus() {
             return rua.temOnibus();

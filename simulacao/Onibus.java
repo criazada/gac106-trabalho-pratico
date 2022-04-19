@@ -16,6 +16,15 @@ public class Onibus extends Veiculo {
     private int capacidade;
     private Set<PedestreOnibus> passageiros;
 
+    /**
+     * Cria um onibus.
+     * @param localizacao inicial do onibus
+     * @param capacidade capacidade maxima de pedestres no onibus
+     * @param rota rota que o onibus ira seguir
+     * @param inicio ponto inicial da rota.
+     * @param mapa instancia do mapa da simulacao.
+     * @param rand intancia do gerador de numeros aleatorios com a seed inicial
+     */
     public Onibus(Localizacao localizacao, int capacidade, RotaOnibus rota, int inicio, Mapa mapa, Random rand) {
         super(Recurso.ONIBUS.getImagem(), localizacao, mapa, rand);
         esperar = 5;
@@ -24,16 +33,25 @@ public class Onibus extends Veiculo {
         this.capacidade = capacidade;
         passageiros = new HashSet<>();
     }
-
+    /**
+     * Seta a localizaçaõ do onibus para ir para o proximo ponto da rota.
+     * @param ponto proximo ponto da rota.
+     */
     private void irParaPonto(int ponto) {
         Localizacao loc = rota.get(ponto % rota.size()).getLocalizacao();
         setLocalizacaoDestino(loc);
     }
-
+    /**
+     * @return Retorna se o onibus esta cheio.
+     */
     private boolean cheio() {
         return passageiros.size() == capacidade;
     }
-
+    /**
+     * Recebe um pedestre e o adiciona ao onibus.
+     * @param p Pedestre que sera adicionado ao onibus.
+     * @return true se o pedestre foi adicionado com sucesso e false caso onibus esteja cheio.
+     */
     public boolean receberPassageiro(PedestreOnibus pedestre) {
         if (!cheio()) {
             passageiros.add(pedestre);
@@ -42,7 +60,11 @@ public class Onibus extends Veiculo {
             return false;
         }
     }
-
+    /**
+     * Remove um pedestre do onibus.
+     * @param p Pedestre que sera removido do onibus.
+     * @return true se o pedestre foi removido com sucesso e false caso o pedestre nao esteja no onibus.
+     */
     public boolean removerPassageiro(PedestreOnibus pedestre) {
         if (estaNoPonto() && passageiros.contains(pedestre)) {
             passageiros.remove(pedestre);
@@ -51,17 +73,21 @@ public class Onibus extends Veiculo {
             return false;
         }
     }
-
+    /**
+     * Seta para onibus para proximo ponto da rota.
+     */
     @Override
     public void fimDeRota() {
         pontoAtual++;
         irParaPonto(pontoAtual);
     }
-
+    /**
+     * @return Retorna o ponto de onibus mais proximo.
+     */
     private PontoOnibus getPontoMaisProximo() {
         return (PontoOnibus) getMapa().getPontoDeInteresseMaisProximo(this, Mapa.PontoDeInteresse.PONTO_ONIBUS);
     }
-
+    
     @Override
     public void executarAcao() {
         for (PedestreOnibus po : passageiros.toArray(new PedestreOnibus[0])) {
