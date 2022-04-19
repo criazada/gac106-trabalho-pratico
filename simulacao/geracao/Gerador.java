@@ -309,8 +309,12 @@ public class Gerador {
             y *= 4;
 
             for (int dx = 0; dx <= Math.abs(d.componenteY()); dx++) {
+                int xfinal = x + dx - d.componenteX() * 2;
+                if (xfinal < 0 || xfinal >= largura) continue;
                 for (int dy = 0; dy <= Math.abs(d.componenteX()); dy++) {
-                    faixas[y + dy - d.componenteY() * 2][x + dx - d.componenteX() * 2] = true;
+                    int yfinal = y + dy - d.componenteY() * 2;
+                    if (yfinal < 0 || yfinal >= altura) continue;
+                    faixas[yfinal][xfinal] = true;
                 }
             }
         }
