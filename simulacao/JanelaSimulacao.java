@@ -11,7 +11,10 @@ import javax.swing.*;
 public class JanelaSimulacao extends JFrame {
     private Mapa mapa;
     private VisaoMapa visaoMapa;
-
+    /**
+     * Constroi uma janela para a simulacao.
+     * @param mapa A intancia do mapa da simulacao.
+     */
     public JanelaSimulacao(Mapa mapa) {
         this.mapa = mapa;
         visaoMapa = new VisaoMapa(mapa.getLargura(), mapa.getAltura());
