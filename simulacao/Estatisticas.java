@@ -2,7 +2,6 @@ package simulacao;
 
 public class Estatisticas {
     private int passageiros;
-    private int paradasOnibus;
     private int distanciaPercorridaOnibus;
     private int tempoPedestreNoPonto;
     private int tempoPedestreNoOnibus;
@@ -10,12 +9,6 @@ public class Estatisticas {
     private int tempoOnibusNoPonto;
     private int totalPassageiros;
 
-    /**
-     * Incrementa a estatitica de quantas vezes o onibus parou.
-     */
-    public void onibusParou() {
-        paradasOnibus++;
-    }
     /**
      * Incrementa a estatitica de quantas unidades o onibus percorreu.
      */
@@ -67,7 +60,6 @@ public class Estatisticas {
         System.out.println();
         System.out.printf("Passageiros ainda nos onibus: %d%n", passageiros);
         System.out.printf("Passageiros transportados no total: %d%n", totalPassageiros);
-        System.out.printf("Vezes que onibus pararam: %d%n", paradasOnibus);
         System.out.printf("Tempo gasto por onibus no ponto: %d%n", tempoOnibusNoPonto);
         System.out.printf("Distancia que onibus percorreram: %d%n", distanciaPercorridaOnibus);
         System.out.printf("Tempo total de passageiros esperando no ponto: %d%n", tempoPedestreNoPonto);

@@ -44,10 +44,12 @@ public class Simulacao {
             rota.add(po);
         }
 
+        // gera onibus 
         for (int i = 0; i < 5; i++) {
             new Onibus(mapa.getRuaAleatoria(rand), 10, rota, rand.nextInt(rota.size()), mapa, rand);
         }
 
+        // gera pedestres dos onibus
         for (int i = 0; i < 100; i++) {
             new PedestreOnibus(mapa.getCalcadaAleatoria(rand), mapa, rand);
         }

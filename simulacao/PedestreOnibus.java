@@ -54,6 +54,7 @@ public class PedestreOnibus extends PedestreAmbulante {
                     }
                 }
             }
+            getEstatisticas().pedestreEsperou();
         } else if (estado == Estado.Onibus) {
             //se esta no desitno e onibus ta no ponto 
             getEstatisticas().pedestreNoOnibus();
@@ -64,5 +65,11 @@ public class PedestreOnibus extends PedestreAmbulante {
                 }
             }
         }
+    }
+
+    @Override
+    public void executarAcao() {
+        super.executarAcao();
+        getEstatisticas().pedestreAndou();
     }
 }
